@@ -47,7 +47,7 @@ p.isolum_background = [0.5 0.5 0.5];
 %p.isolum_background = [0.1 0.1 0.1];
 
 % Design Parameters   
-p.trials_per_cond   = 100; %100 must be a even number to enable even distribution of vertical positions
+p.trials_per_cond   = 80; %100 must be a even number to enable even distribution of vertical positions
 p.conditions        = {'TLrDV', 'TLlDV','TVDLr','TVDLl','TLrDN','TLlDN','TNDLr','TNDLl','BL'};
 %p.conditions       = {'TLrDV','TLlDV','TVDLr','TVDLl','TLrDN','TLlDN','TNDLr','TNDLl','BL','BL'}; %double baseline
 p.trials_total      = p.trials_per_cond*length(p.conditions);
