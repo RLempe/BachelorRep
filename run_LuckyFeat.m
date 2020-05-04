@@ -1,4 +1,4 @@
-function run_ERP(sub,cond,train,isolum,start_block)
+function run_LuckyFeat(sub,cond,train,isolum,start_block)
 %simple ERP-Experiment with four target, distractor and/or baseline stimuli; no flicker
     
     % to first show a few trials without isoluminance adjustment and maxially dark dot
@@ -105,7 +105,7 @@ p.ITI               = .550;
 
 % Logpath
 % p.logpath           = '/home/pc/matlab/user/maria/ERP/Logs/';
-p.logpath = 'R:\MATLAB\ERP Test\maria\ERP\Logs\';
+p.logpath = 'R:\MATLAB\BachelorRep\Logs\';
 format shortg; starttime = clock;
 p.timestamp         = [num2str(starttime(1)),'-',num2str(starttime(2)),'-',num2str(starttime(3)),'_',num2str(starttime(4)),'-',num2str(starttime(5))];
 %p.timestamp         = '';
