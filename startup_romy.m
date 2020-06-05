@@ -14,6 +14,12 @@ function [] = startup_romy(exp)
         
 % end
 
+% Screen('Preference', 'SkipSyncTests', 1); % only for testing on notebook
+% % alternatively, adjust the buffer swap thresholds
+% %Screen('Preference','SyncTestSettings',0.001, 50, 0.1, 5);
+% Screen('Preference','VisualDebugLevel', 0);
+
+
 fprintf('Paths added. \n');
 
 end

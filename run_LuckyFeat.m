@@ -36,12 +36,24 @@ function run_LuckyFeat(sub,cond,train,isolum,start_block)
     
 % FIX!!! enable timestamp
 
+%% Parameter zur Testung ohne Funktionseingabe
+sub = 98;
+cond = 1;
+train = 0;
+isolum = 0;
+start_block =1;
+    
+
 %% Parameters
 % Screen Parameters
+Screen('Preference', 'SkipSyncTests', 1);
+
 Testing = 0;
-p.scr_screen = 1;
-p.scr_refrate = 120;
-p.scr_res = [1920 1080];
+p.scr_screen = 2;
+%p.scr_refrate = 120;
+p.scr_refrate = 60;
+%p.scr_res = [1920 1080];
+p.scr_res = [2560 1440];
 p.background_col = [0.05 0.05 0.05];
 p.isolum_background = [0.5 0.5 0.5];
 %p.isolum_background = [0.1 0.1 0.1];
@@ -50,6 +62,9 @@ p.isolum_background = [0.5 0.5 0.5];
 p.trials_per_cond   = 80; %100 must be a even number to enable even distribution of vertical positions
 p.conditions        = {'TLrDV', 'TLlDV','TVDLr','TVDLl','TLrDN','TLlDN','TNDLr','TNDLl','BL'};
 %p.conditions       = {'TLrDV','TLlDV','TVDLr','TVDLl','TLrDN','TLlDN','TNDLr','TNDLl','BL','BL'}; %double baseline
+
+%p.conditions = {'TD};
+
 p.trials_total      = p.trials_per_cond*length(p.conditions);
 p.n_blocks          = length(p.conditions)*2; %18 blocks
 p.trials_per_block  = p.trials_total/p.n_blocks;
@@ -63,8 +78,13 @@ p.stim_start_cols   = [0 1 0; 1 .4 0];
 p.isolum_defaults   = [0.0000 0.1647 0.0000;0.1804 0.0722 0.0000]; %green and 1/.4 orange on .1 background
 %p.isolum_defaults   = [0 0.16471 0; 0.2 0.06 0]; %green and 1/.3 orange on .1 background
 %p.isolum_defaults   = [0 1 0; 1 .3 0];
-p.stim_cols_labels  = {'gr√ºn';'orange'};
+p.stim_cols_labels  = {'gruen';'orange'};
+
+
 p.stim_shapes       = {'Raute';'Quadrat'};% shape  of stimuli; later asigned to target and distractor (col1 goes with shape1); BL shape is fixed to circle
+% p.stim_shapes       = {'Quad_links';'Quad_rechts'};% Versuch, die beiden schiefen Quadrate zu programmieren
+
+
 p.dot_lum_max       = .05;%.05;       %maximal luminance change for training; also used for default
 p.dot_lum_min       = .01;     %minimum luminance change for training
 p.dot_lum_steps     = 5;        %steps between min and max luminance for training
@@ -99,7 +119,8 @@ p.trg_stop          = 202;
 p.jitter            = [0 .250 .500 .750 1];
 p.pre_fix_min       = .500; % jitter added
 p.post_fix_min      = 1.2;  % equals response window
-p.stim_duration     = .100;      
+%p.stim_duration     = .100;
+p.stim_duration     = 1; 
 p.ITI               = .550; 
 % total trial duration is 500 + 100 + 1200 + 550 = 2.35 sec + jitter! [2.35-3.35 sec]
 
@@ -109,19 +130,21 @@ p.logpath = 'R:\MATLAB\BachelorRep\Logs\';
 format shortg; starttime = clock;
 p.timestamp         = [num2str(starttime(1)),'-',num2str(starttime(2)),'-',num2str(starttime(3)),'_',num2str(starttime(4)),'-',num2str(starttime(5))];
 %p.timestamp         = '';
-%% Define defaults
-if nargin<5
-    start_block=1;
-end
-if nargin<4
-    isolum = 0;
-end
-if nargin<3
-    train = 0;
-end
-if nargin<2
-    cond=1;
-end
+
+%Auskommentiert f¸rs testen
+% %% Define defaults
+% if nargin<5
+%     start_block=1;
+% end
+% if nargin<4
+%     isolum = 0;
+% end
+% if nargin<3
+%     train = 0;
+% end
+% if nargin<2
+%     cond=1;
+% end
 
 %% Trialstruct
 rand('state',sub);
@@ -166,21 +189,22 @@ AssertOpenGL
 % end
 % lptwrite(1,0);
 
-%Test Resolution
-temp = Screen('Resolution',p.scr_screen);
-if any([temp.width~=p.scr_res(1), temp.height~=p.scr_res(2), temp.hz~=p.scr_refrate])
-    try Screen('ConfigureDisplay', 'Scanout',p.scr_screen, 0, p.scr_res(1),p.scr_res(2),p.scr_refrate);
-        fprintf('...adjusting screen settings to %1.0f X %1.0f with %1.0f Hz... takes some seconds...',p.scr_res(1),p.scr_res(2),p.scr_refrate)
-        WaitSecs(10)
-    catch
-        fprintf(['!!!!\n...not able to adjust screen settings to requested values' ...
-            '\ncurrent settings: %1.0f X %1.0f with %1.0f Hz\n!!!!\n'],...
-            temp.width, temp.height, temp.hz)
-    end
-        
-else
-    fprintf('...screen settings are fine: %1.0f X %1.0f with %1.0f Hz',p.scr_res(1),p.scr_res(2),p.scr_refrate)
-end
+% F¸r Screen Fehlermeldung auskommentiert
+% %Test Resolution
+% temp = Screen('Resolution',p.scr_screen);
+% if any([temp.width~=p.scr_res(1), temp.height~=p.scr_res(2), temp.hz~=p.scr_refrate])
+%     try Screen('ConfigureDisplay', 'Scanout',p.scr_screen, 0, p.scr_res(1),p.scr_res(2),p.scr_refrate);
+%         fprintf('...adjusting screen settings to %1.0f X %1.0f with %1.0f Hz... takes some seconds...',p.scr_res(1),p.scr_res(2),p.scr_refrate)
+%         WaitSecs(10)
+%     catch
+%         fprintf(['!!!!\n...not able to adjust screen settings to requested values' ...
+%             '\ncurrent settings: %1.0f X %1.0f with %1.0f Hz\n!!!!\n'],...
+%             temp.width, temp.height, temp.hz)
+%     end
+%         
+% else
+%     fprintf('...screen settings are fine: %1.0f X %1.0f with %1.0f Hz',p.scr_res(1),p.scr_res(2),p.scr_refrate)
+% end
 
 %Supress bright PTB screen
 Screen('Preference','VisualDebugLevel', 0);
@@ -218,6 +242,7 @@ p.positions = [ps.xCenter, ps.yCenter-p.stim_dist; ...                        % 
     ps.xCenter, ps.yCenter+p.stim_dist;...
     ps.xCenter-p.stim_dist, ps.yCenter];                     
 p.stim_rect = [0 0 p.stim_size p.stim_size];                                % create a stimulus area that is larger than the squared stimulus size to be big enough for Raute shape
+% reicht rechnerisch auch aus f¸r Dreieck und Sechseck
 p.pos_rects=zeros(4,4);                                                    % center this on the four positions
 for i = 1:4
     p.pos_rects(i,:)=CenterRectOnPoint(p.stim_rect,p.positions(i,1),p.positions(i,2));
@@ -275,16 +300,25 @@ switch p.target_shape
     fprintf('This shape is not defined!\n')
 end
 
+
 p.distr_rot = 0;
 switch p.distr_shape
     case 'Raute'
-    p.distr_rot = 45;
+        p.distr_rot = 45;
     otherwise
     fprintf('This shape is not defined!\n')
 end
 
 %Create textures        %[discid, discrect] = CreateProceduralSmoothedDisc(windowPtr, width, height [, backgroundColorOffset =(0,0,0,0)] [, radius=inf] [, sigma=11] [,useAlpha=1] [,method=1])
-tex.BL = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size/2 ,1);
+%Normale Baseline (Kreis)
+%tex.BL = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size/2 ,1);
+
+%schiefes Quadrat als Baseline
+%tex.BL = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
+
+%Dreieck oder Sechseck als Baseline
+tex.BL = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
+
 tex.target = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
 tex.distr = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size,1);
 tex.dot = CreateProceduralSmoothedDisc(ps.window, p.dot_size, p.dot_size, [], p.dot_size/2 ,1);
@@ -348,16 +382,16 @@ for t = start_trial:p.trials_total
     end
     
     %define new dot color for every trial
-    p.dot_target_col(find(p.target_col)) = p.target_col(find(p.target_col)) - ... %modify only the positions where there are positive RGB values
-        p.dot_range_arr(t)*(p.target_col(find(p.target_col))/max(p.target_col));  %take the current luminance change out of array and multiply it with the ratio of the RGB values (to keep the color ratio of mixed colors)
-    p.dot_distr_col(find(p.distr_col))   = p.distr_col(find(p.distr_col)) - ...
-        p.dot_range_arr(t)*(p.distr_col(find(p.distr_col))/max(p.distr_col));
-    p.dot_BL_col(find(p.BL_col))         = p.BL_col(find(p.BL_col)) - ...
-        p.dot_range_arr(t)*(p.BL_col(find(p.BL_col))/max(p.BL_col));
-    
-%     p.dot_target_col(find(p.target_col)) = p.target_col(find(p.target_col)) - p.dot_range_arr(t); %take luminance change out of p.dot_range_arr
-%     p.dot_distr_col(find(p.distr_col))   = p.distr_col(find(p.distr_col)) - p.dot_range_arr(t);
-%     p.dot_BL_col(find(p.BL_col))         = p.BL_col(find(p.BL_col)) - p.dot_range_arr(t);
+%     p.dot_target_col(p.target_col) = p.target_col(p.target_col) - ... %modify only the positions where there are positive RGB values
+%         p.dot_range_arr(t)*(p.target_col(p.target_col)/max(p.target_col));  %take the current luminance change out of array and multiply it with the ratio of the RGB values (to keep the color ratio of mixed colors)
+%     p.dot_distr_col(p.distr_col)   = p.distr_col(p.distr_col) - ...
+%         p.dot_range_arr(t)*(p.distr_col(p.distr_col)/max(p.distr_col));
+%     p.dot_BL_col(p.BL_col)         = p.BL_col(p.BL_col) - ...
+%         p.dot_range_arr(t)*(p.BL_col(p.BL_col)/max(p.BL_col));
+%     
+    p.dot_target_col(find(p.target_col)) = p.target_col(find(p.target_col)) - p.dot_range_arr(t); %take luminance change out of p.dot_range_arr
+    p.dot_distr_col(find(p.distr_col))   = p.distr_col(find(p.distr_col)) - p.dot_range_arr(t);
+    p.dot_BL_col(find(p.BL_col))         = p.BL_col(find(p.BL_col)) - p.dot_range_arr(t);
     
     % TRIAL PRESENTATION
     [response(t), timing(t)] = ERP_present_trial(p,ps,trialstruct(t),tex);
