@@ -60,10 +60,10 @@ end
 
 %Schiefes Quadrat als Baseline (22.5 für nach rechts. verwende 337.5 für
 %nach links
-% for bl = 1:length(pos_pool)    
-%     Screen('DrawTexture',ps.window, tex.BL, [], p.circle_rects(pos_pool(bl),:), 22.5, [], [], p.BL_col) 
-%     Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col); %FIX also define dot positions in trial struct?
-% end
+for bl = 1:length(pos_pool)    
+    Screen('DrawTexture',ps.window, tex.BL, [], p.pos_rects(pos_pool(bl),:), 22.5, [], [], p.BL_col) 
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col); %FIX also define dot positions in trial struct?
+end
 
 % % Dreieck als Baseline: s=Seitenlänge, h=Höhe;
 % for bl = 1:length(pos_pool)  
@@ -75,15 +75,15 @@ end
 %     Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col); %FIX also define dot positions in trial struct?
 % end
 
-% Sechseck als Baseline: s=Seitenlänge, h=Höhe;
-for bl = 1:length(pos_pool)  
-    s = sqrt(2)*p.stim_size/(sqrt(3)*sqrt(sqrt(3)));
-    h = sqrt(3)*s;
-    s=round(s);
-    h=round(h);
-    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(pos_pool(bl),1)-0.5*s) (p.positions(pos_pool(bl),1)+0.5*s) (p.positions(pos_pool(bl),1)+s) (p.positions(pos_pool(bl),1)+0.5*s) (p.positions(pos_pool(bl),1)-0.5*s) (p.positions(pos_pool(bl),1)-s);(p.positions(pos_pool(bl),2)+0.5*h) (p.positions(pos_pool(bl),2)+0.5*h) p.positions(pos_pool(bl),2) (p.positions(pos_pool(bl),2)-0.5*h) (p.positions(pos_pool(bl),2)-0.5*h) p.positions(pos_pool(bl),2)]',1);
-    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col); %FIX also define dot positions in trial struct?
-end
+% % Sechseck als Baseline: s=Seitenlänge, h=Höhe;
+% for bl = 1:length(pos_pool)  
+%     s = sqrt(2)*p.stim_size/(sqrt(3)*sqrt(sqrt(3)));
+%     h = sqrt(3)*s;
+%     s=round(s);
+%     h=round(h);
+%     Screen('FillPoly',ps.window,p.BL_col,[(p.positions(pos_pool(bl),1)-0.5*s) (p.positions(pos_pool(bl),1)+0.5*s) (p.positions(pos_pool(bl),1)+s) (p.positions(pos_pool(bl),1)+0.5*s) (p.positions(pos_pool(bl),1)-0.5*s) (p.positions(pos_pool(bl),1)-s);(p.positions(pos_pool(bl),2)+0.5*h) (p.positions(pos_pool(bl),2)+0.5*h) p.positions(pos_pool(bl),2) (p.positions(pos_pool(bl),2)-0.5*h) (p.positions(pos_pool(bl),2)-0.5*h) p.positions(pos_pool(bl),2)]',1);
+%     Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col); %FIX also define dot positions in trial struct?
+% end
 
 Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col); %add fixation cross
 

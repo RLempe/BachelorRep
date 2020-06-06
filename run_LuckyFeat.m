@@ -120,7 +120,7 @@ p.jitter            = [0 .250 .500 .750 1];
 p.pre_fix_min       = .500; % jitter added
 p.post_fix_min      = 1.2;  % equals response window
 %p.stim_duration     = .100;
-p.stim_duration     = 1; 
+p.stim_duration     = 15; 
 p.ITI               = .550; 
 % total trial duration is 500 + 100 + 1200 + 550 = 2.35 sec + jitter! [2.35-3.35 sec]
 
@@ -314,10 +314,10 @@ end
 %tex.BL = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size/2 ,1);
 
 %schiefes Quadrat als Baseline
-%tex.BL = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
-
-%Dreieck oder Sechseck als Baseline
 tex.BL = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
+
+% %Dreieck oder Sechseck als Baseline
+% tex.BL = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
 
 tex.target = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
 tex.distr = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size,1);
