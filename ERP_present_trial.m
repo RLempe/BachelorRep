@@ -46,24 +46,114 @@ pos_pool(pos_pool==target_pos)=[];  % take drawn target out of position pool
 end
 
 if distr_pos                        % draw distractor (with dots) if present
-Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), p.distr_rot, [], [], p.distr_col);
-%Screen('DrawTexture', ps.window, tex.dot, [],  dot_distr_rect, [], [], [], p.dot_distr_col);
-Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(distr_pos,:,dot_distr_pos), [], [], [], p.dot_distr_col); 
-pos_pool(pos_pool==distr_pos)=[];   % take drawn distractor out of position pool
+    if trialstruct.condition == 'p4' || trialstruct.condition == 's4' % dann brauchen wir Raute als Distraktor
+       Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), 45, [], [], p.distr_col);
+       Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(distr_pos,:,dot_distr_pos), [], [], [], p.dot_distr_col); 
+       pos_pool(pos_pool==distr_pos)=[];   % take drawn distractor out of position pool
+    else % dann brauchen wir Dreieck als Distraktor
+      s = 2*p.stim_size/(sqrt(sqrt(3)));
+      h = 0.5*sqrt(3)*s;
+      s=round(s);
+      h=round(h);
+      Screen('FillPoly',ps.window,p.BL_col,[(p.positions(distr_pos,1)-0.5*s) (p.positions(distr_pos,1)+0.5*s) p.positions(distr_pos,1);(p.positions(distr_pos,2)+(1/3)*h) (p.positions(distr_pos,2)+(1/3)*h) (p.positions(distr_pos,2)-(2/3)*h)]');
+      Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col) 
+      pos_pool(pos_pool==distr_pos)=[];
+    end
 end
 
+if trialstruct.condition == 'p1' || trialstruct.condition == 's1' || trialstruct.condition == 'p4' || trialstruct.condition == 's4' % dann brauchen wir Sechseck und Kreis als BL
+    s = sqrt(2)*p.stim_size/(sqrt(3)*sqrt(sqrt(3)));
+    h = sqrt(3)*s;
+    s=round(s);
+    h=round(h);
+    r = randperm(2);
+    blpos1 = pos_pool(r(1));
+    blpos2 = pos_pool(r(2));
+    %jetzt kommt der Kreis
+    Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) 
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos1,:,randi(2)), [], [], [], p.dot_BL_col);
+    % und jetzt kommt das Sechseck
+    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpose2,2)+0.5*h) p.positions(blpose2,2) (p.positions(blpose2,2)-0.5*h) (p.positions(blpose2,2)-0.5*h) p.positions(blpose2,2)]',1);
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
+end
+
+if trialstruct.condition == 'p2' || trialstruct.condition == 's2' %dann brauchen wir Sechseck, Kreis und Quadrat als BL
+    s = sqrt(2)*p.stim_size/(sqrt(3)*sqrt(sqrt(3)));
+    h = sqrt(3)*s;
+    s=round(s);
+    h=round(h);
+    r = randperm(3);
+    blpos1 = pos_pool(r(1));
+    blpos2 = pos_pool(r(2));
+    blpos3 = pos_pool(r(3));
+    %jetzt kommt der Kreis
+    Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) 
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos1,:,randi(2)), [], [], [], p.dot_BL_col);
+    % und jetzt kommt das Sechseck
+    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpose2,2)+0.5*h) p.positions(blpose2,2) (p.positions(blpose2,2)-0.5*h) (p.positions(blpose2,2)-0.5*h) p.positions(blpose2,2)]',1);
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
+    %jetzt kommt das Quadrat
+    Screen('DrawTexture', ps.window, tex.quadrat, [],  p.pos_rects(blpos3,:), 0, [], [], p.BL_col);
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
+end
+
+if trialstruct.condition == 'p3' || trialstruct.condition == 's3' %dann brauchen wir Sechseck, Kreis und Dreieck als BL
+    s = sqrt(2)*p.stim_size/(sqrt(3)*sqrt(sqrt(3)));
+    h = sqrt(3)*s;
+    s=round(s);
+    h=round(h);
+    s2 = 2*p.stim_size/(sqrt(sqrt(3)));
+    h2 = 0.5*sqrt(3)*s2;
+    s2=round(s2);
+    h2=round(h2);
+    r = randperm(3);
+    blpos1 = pos_pool(r(1));
+    blpos2 = pos_pool(r(2));
+    blpos3 = pos_pool(r(3));
+    %jetzt kommt der Kreis
+    Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) 
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos1,:,randi(2)), [], [], [], p.dot_BL_col);
+    % und jetzt kommt das Sechseck
+    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpose2,2)+0.5*h) p.positions(blpose2,2) (p.positions(blpose2,2)-0.5*h) (p.positions(blpose2,2)-0.5*h) p.positions(blpose2,2)]',1);
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
+    %jetzt kommt das Dreieck
+    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos3,1)-0.5*s2) (p.positions(blpos3,1)+0.5*s2) p.positions(blpos3,1);(p.positions(blpos3,2)+(1/3)*h2) (p.positions(blpos3,2)+(1/3)*h2) (p.positions(blpos3,2)-(2/3)*h2)]');
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos3,:,randi(2)), [], [], [], p.dot_BL_col);
+end
+    
+if trialstruct.condition == 'p5' || trialstruct.condition == 's5' %dann brauchen wir zwei Quadrate als BL
+   for bl = 1:length(pos_pool)    
+     Screen('DrawTexture',ps.window, tex.quadrat, [], p.pos_rects(pos_pool(bl),:), 0, [], [], p.BL_col) 
+     Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col);
+  end 
+end 
+
+if trialstruct.condition == 'p6' || trialstruct.condition == 's6' %dann brauchen wir zwei schiefe Quadrate als BL
+   for bl = 1:length(pos_pool)
+     r = randi(2);
+     if r == 1
+         neigung = 22.5;
+     else
+         neigung = 337.5;
+     end
+     Screen('DrawTexture',ps.window, tex.quadrat, [], p.pos_rects(pos_pool(bl),:), neigung, [], [], p.BL_col) 
+     Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col);
+  end 
+end 
+    
+    
 %Normale Baseline (Kreis)
 % for bl = 1:length(pos_pool)    
 %     Screen('DrawTexture',ps.window, tex.BL, [], p.circle_rects(pos_pool(bl),:), 0, [], [], p.BL_col) 
 %     Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col); %FIX also define dot positions in trial struct?
 % end
 
-%Schiefes Quadrat als Baseline (22.5 für nach rechts. verwende 337.5 für
-%nach links
-for bl = 1:length(pos_pool)    
-    Screen('DrawTexture',ps.window, tex.BL, [], p.pos_rects(pos_pool(bl),:), 22.5, [], [], p.BL_col) 
-    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col); %FIX also define dot positions in trial struct?
-end
+% %Schiefes Quadrat als Baseline (22.5 für nach rechts. verwende 337.5 für
+% %nach links
+% for bl = 1:length(pos_pool)    
+%     Screen('DrawTexture',ps.window, tex.BL, [], p.pos_rects(pos_pool(bl),:), 22.5, [], [], p.BL_col) 
+%     Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col); %FIX also define dot positions in trial struct?
+% end
 
 % % Dreieck als Baseline: s=Seitenlänge, h=Höhe;
 % for bl = 1:length(pos_pool)  

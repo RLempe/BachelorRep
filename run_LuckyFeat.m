@@ -38,7 +38,7 @@ function run_LuckyFeat(sub,cond,train,isolum,start_block)
 
 %% Parameter zur Testung ohne Funktionseingabe
 sub = 98;
-cond = 1;
+%cond = 1;
 train = 0;
 isolum = 0;
 start_block =1;
@@ -59,16 +59,23 @@ p.isolum_background = [0.5 0.5 0.5];
 %p.isolum_background = [0.1 0.1 0.1];
 
 % Design Parameters   
-p.trials_per_cond   = 80; %100 must be a even number to enable even distribution of vertical positions
-p.conditions        = {'TLrDV', 'TLlDV','TVDLr','TVDLl','TLrDN','TLlDN','TNDLr','TNDLl','BL'};
-%p.conditions       = {'TLrDV','TLlDV','TVDLr','TVDLl','TLrDN','TLlDN','TNDLr','TNDLl','BL','BL'}; %double baseline
+%p.trials_per_cond   = 80; %100 must be a even number to enable even distribution of vertical positions
+%p.conditions        = {'TLrDV', 'TLlDV','TVDLr','TVDLl','TLrDN','TLlDN','TNDLr','TNDLl','BL'};
 
-%p.conditions = {'TD};
+p.conditions = {'p1', 's1', 'p2', 's2', 'p3', 's3', 'p4', 's4', 'p5', 's5', 'p6', 's6'};
 
-p.trials_total      = p.trials_per_cond*length(p.conditions);
-p.n_blocks          = length(p.conditions)*2; %18 blocks
-p.trials_per_block  = p.trials_total/p.n_blocks;
-p.train_trials      = p.trials_per_block;
+p.trials_per_probe = 72;
+p.trials_per_search = 108;
+% nur fürs testen, wo probe und search noch nicht!! getrennt programmiert
+% ist
+p.trials_per_cond = (72+108)/2;
+% die muss dann unbedingt raus und in der trialstruct geändert werden
+
+
+p.trials_total = p.trials_per_probe*(1/2)*length(p.conditions) + p.trials_per_search*(1/2)*length(p.conditions);
+p.n_blocks = 24; %willkürlich festgelegt
+p.trials_per_block = p.trials_total/p.n_blocks;
+p.train_trials = 2*48; %nach Gaspelin et al.
 
 % Stimulus definition
 p.stim_start_cols   = [0 1 0; 1 .4 0];
@@ -78,10 +85,10 @@ p.stim_start_cols   = [0 1 0; 1 .4 0];
 p.isolum_defaults   = [0.0000 0.1647 0.0000;0.1804 0.0722 0.0000]; %green and 1/.4 orange on .1 background
 %p.isolum_defaults   = [0 0.16471 0; 0.2 0.06 0]; %green and 1/.3 orange on .1 background
 %p.isolum_defaults   = [0 1 0; 1 .3 0];
-p.stim_cols_labels  = {'gruen';'orange'};
+p.stim_cols_labels  = {'gruen';'rot'};
 
 
-p.stim_shapes       = {'Raute';'Quadrat'};% shape  of stimuli; later asigned to target and distractor (col1 goes with shape1); BL shape is fixed to circle
+p.stim_shapes       = {'Raute';'Quadrat';'Dreieck';'Schiefquadrat';'Kreis';'Sechseck'};% shape  of stimuli; later asigned to target and distractor (col1 goes with shape1);
 % p.stim_shapes       = {'Quad_links';'Quad_rechts'};% Versuch, die beiden schiefen Quadrate zu programmieren
 
 
@@ -120,7 +127,7 @@ p.jitter            = [0 .250 .500 .750 1];
 p.pre_fix_min       = .500; % jitter added
 p.post_fix_min      = 1.2;  % equals response window
 %p.stim_duration     = .100;
-p.stim_duration     = 15; 
+p.stim_duration     = 1; 
 p.ITI               = .550; 
 % total trial duration is 500 + 100 + 1200 + 550 = 2.35 sec + jitter! [2.35-3.35 sec]
 
@@ -271,25 +278,24 @@ for po = 1:4
     end
 end
 
-%Assign Target/Distractor condition
-if cond == 1
-    p.target_col = p.stim_cols(1,:);
-    p.distr_col = p.stim_cols(2,:);
-    p.target_shape = p.stim_shapes{1};
-    p.distr_shape = p.stim_shapes{2};
-    p.target_col_label = p.stim_cols_labels{1};
-    p.distr_col_label = p.stim_cols_labels{2};
-elseif cond == 2
-    p.target_col = p.stim_cols(2,:);
-    p.distr_col = p.stim_cols(1,:);
-    p.target_shape = p.stim_shapes{2};
-    p.distr_shape = p.stim_shapes{1};
-    p.target_col_label = p.stim_cols_labels{2};
-    p.distr_col_label = p.stim_cols_labels{1};
-else
-    fprintf('Condition mapping is missing or invalid!\n')
-end
-p.BL_col = p.stim_cols(1,:); %define color of BL stimulus
+% die Kommentierten haben (soweit ich sehe) im weiteren Code keine
+% Bedeutung
+p.target_shape = p.stim_shapes{1};
+p.target_col = p.stim_cols(1,:);
+p.target_col_label = p.stim_cols_labels{1};
+% p.distr1_shape = p.stim_shapes{3};
+% p.distr2_shape = p.stim_shapes{1};
+p.distr_col = p.stim_cols(2,:);
+p.distr_col_label = p.stim_cols_labels{2};
+p.BL_col = p.target_col;
+% p.BLkreis_shape = p.stim_shapes{5};
+% p.BLquadrat_shape = p.stim_shapes{2}; 
+% p.BLdreieck_shape = p.stim_shapes{3};
+% p.BLsechseck_shape = p.stim_shapes{6}; 
+% p.BLschiefquadrat_shape = p.stim_shapes{4}; 
+
+
+
 
 %Decode and define possible shapes for target and distractor (BL stimulus FIXED to CIRCLE now!!)
 p.target_rot = 0;
@@ -301,23 +307,24 @@ switch p.target_shape
 end
 
 
-p.distr_rot = 0;
-switch p.distr_shape
-    case 'Raute'
-        p.distr_rot = 45;
-    otherwise
-    fprintf('This shape is not defined!\n')
-end
+% p.distr_rot = 0;
+% switch p.distr_shape
+%     case 'Raute'
+%         p.distr_rot = 45;
+%     otherwise
+%     fprintf('This shape is not defined!\n')
+% end
 
 %Create textures        %[discid, discrect] = CreateProceduralSmoothedDisc(windowPtr, width, height [, backgroundColorOffset =(0,0,0,0)] [, radius=inf] [, sigma=11] [,useAlpha=1] [,method=1])
 %Normale Baseline (Kreis)
-%tex.BL = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size/2 ,1);
+tex.kreis = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size/2 ,1);
 
-%schiefes Quadrat als Baseline
-tex.BL = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
+% schiefes Quadrat als Baseline
+tex.quadrat = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
 
-% %Dreieck oder Sechseck als Baseline
-% tex.BL = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
+ %Dreieck oder Sechseck als Baseline
+tex.dreieck = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
+tex.sechseck = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
 
 tex.target = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
 tex.distr = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size,1);
