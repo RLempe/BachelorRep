@@ -127,7 +127,7 @@ p.jitter            = [0 .250 .500 .750 1];
 p.pre_fix_min       = .500; % jitter added
 p.post_fix_min      = 1.2;  % equals response window
 %p.stim_duration     = .100;
-p.stim_duration     = 1; 
+p.stim_duration     = 5; 
 p.ITI               = .550; 
 % total trial duration is 500 + 100 + 1200 + 550 = 2.35 sec + jitter! [2.35-3.35 sec]
 
@@ -278,21 +278,15 @@ for po = 1:4
     end
 end
 
-% die Kommentierten haben (soweit ich sehe) im weiteren Code keine
-% Bedeutung
+
 p.target_shape = p.stim_shapes{1};
 p.target_col = p.stim_cols(1,:);
 p.target_col_label = p.stim_cols_labels{1};
-% p.distr1_shape = p.stim_shapes{3};
-% p.distr2_shape = p.stim_shapes{1};
+
 p.distr_col = p.stim_cols(2,:);
 p.distr_col_label = p.stim_cols_labels{2};
 p.BL_col = p.target_col;
-% p.BLkreis_shape = p.stim_shapes{5};
-% p.BLquadrat_shape = p.stim_shapes{2}; 
-% p.BLdreieck_shape = p.stim_shapes{3};
-% p.BLsechseck_shape = p.stim_shapes{6}; 
-% p.BLschiefquadrat_shape = p.stim_shapes{4}; 
+ 
 
 
 
@@ -322,9 +316,12 @@ tex.kreis = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, []
 % schiefes Quadrat als Baseline
 tex.quadrat = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
 
- %Dreieck oder Sechseck als Baseline
+ %Dreieck oder Sechseck als Baseline (die beiden sind streng genommen egal
+ %und können raus
 tex.dreieck = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
 tex.sechseck = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
+
+
 
 tex.target = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size ,1);
 tex.distr = CreateProceduralSmoothedDisc(ps.window, p.stim_size, p.stim_size, [], p.stim_size,1);

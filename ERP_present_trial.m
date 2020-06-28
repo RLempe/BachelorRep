@@ -40,7 +40,6 @@ t.time1=Screen('Flip', ps.window, 0);
 pos_pool = [1 2 3 4];               % create a pool for all four stimulus positions
 if target_pos                       % draw target (with dots) if present
 Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col);
-%Screen('DrawTexture', ps.window, tex.dot, [], dot_target_rect, [], [], [], p.dot_target_col);
 Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(target_pos,:,dot_target_pos), [], [], [], p.dot_target_col);
 pos_pool(pos_pool==target_pos)=[];  % take drawn target out of position pool
 end
@@ -56,7 +55,7 @@ if distr_pos                        % draw distractor (with dots) if present
       s=round(s);
       h=round(h);
       Screen('FillPoly',ps.window,p.distr_col,[(p.positions(distr_pos,1)-0.5*s) (p.positions(distr_pos,1)+0.5*s) p.positions(distr_pos,1);(p.positions(distr_pos,2)+(1/3)*h) (p.positions(distr_pos,2)+(1/3)*h) (p.positions(distr_pos,2)-(2/3)*h)]');
-      Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(distr_pos,:,randi(2)), [], [], [], p.dot_BL_col) 
+      Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(distr_pos,:,dot_distr_pos), [], [], [], p.dot_distr_col) 
       pos_pool(pos_pool==distr_pos)=[];
     end
 end
@@ -94,7 +93,7 @@ if strcmp(trialstruct.condition,'p2') || strcmp(trialstruct.condition,'s2') %dan
     Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
     %jetzt kommt das Quadrat
     Screen('DrawTexture', ps.window, tex.quadrat, [],  p.pos_rects(blpos3,:), 0, [], [], p.BL_col);
-    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos3,:,randi(2)), [], [], [], p.dot_BL_col);
 end
 
 if strcmp(trialstruct.condition,'p3') || strcmp(trialstruct.condition,'s3') %dann brauchen wir Sechseck, Kreis und Dreieck als BL
