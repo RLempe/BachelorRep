@@ -127,7 +127,11 @@ p.jitter            = [0 .250 .500 .750 1];
 p.pre_fix_min       = .500; % jitter added
 p.post_fix_min      = 1.2;  % equals response window
 %p.stim_duration     = .100;
-p.stim_duration     = 5; 
+
+
+p.probe_buchstabendauer = 2;
+p.probe_hashtagdauer = 2;
+p.stim_duration     = 2; 
 p.ITI               = .550; 
 % total trial duration is 500 + 100 + 1200 + 550 = 2.35 sec + jitter! [2.35-3.35 sec]
 
