@@ -31,6 +31,8 @@ pre_fix_end = p.pre_fix_min+jitter;
 stim_end = pre_fix_end+p.stim_duration;
 buchstabenend = stim_end + p.probe_buchstabendauer;
 hashtagend = buchstabenend + p.probe_hashtagdauer;
+
+
 if trialstruct.condition(1) == 's'
     post_fix_end = stim_end+p.post_fix_min;
     ITI_end = post_fix_end + p.ITI;
@@ -86,7 +88,6 @@ if strcmp(trialstruct.condition,'s1') || strcmp(trialstruct.condition,'s4') % da
 end
 
 %Conditions P1 und P4
-%zeiten sind total off, buchstaben nicht ganz in der mitte :(
 if strcmp(trialstruct.condition,'p1') || strcmp(trialstruct.condition,'p4') % dann brauchen wir Sechseck und Kreis als BL
     Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     s = sqrt(2)*p.stim_size/(sqrt(3)*sqrt(sqrt(3)));
@@ -96,63 +97,43 @@ if strcmp(trialstruct.condition,'p1') || strcmp(trialstruct.condition,'p4') % da
     r4 = randperm(2);
     blpos1 = pos_pool(r4(1));
     blpos2 = pos_pool(r4(2));
-    %jetzt kommt der Kreis
-    Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) 
-    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos1,:,randi(2)), [], [], [], p.dot_BL_col);
-    % und jetzt kommt das Sechseck
-    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1);
-    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
-    %Probieren wir mal Flip
-    t.time2 = Screen('Flip', ps.window, t.time1+stim_end);
-    %nochmal die Figuren
-    Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
-    %Distraktor
-    Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), 45, [], [], p.distr_col);
-    %Target
-    Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col);
     %Kreis
     Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) 
-    % und jetzt kommt das Sechseck
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos1,:,randi(2)), [], [], [], p.dot_BL_col);
+    %Sechseck
     Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1);
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
+    t.time2=Screen('Flip', ps.window, t.time1+pre_fix_end);
+    %Ende des ersten Präsentationsteils
+    %Fixationskreuz
+    Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
+    %Figuren
+    Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), 45, [], [], p.distr_col); %Distraktor
+    Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col); %Target
+    Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) %Kreis
+    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1); %Sechseck
     %und jetzt kommen die Buchstaben
     alphabet = 'A' : 'Z';
     perm = randperm(26);
-%     DrawFormattedText(ps.window, sprintf(genutzte(1)),p.positions(distr_pos), 600, p.fix_col);
-%     DrawFormattedText(ps.window, sprintf(genutzte(2)),p.positions(target_pos), 600, p.fix_col);
-%     DrawFormattedText(ps.window, sprintf(genutzte(3)), p.positions(blpos1), 600, p.fix_col);
-%     DrawFormattedText(ps.window, sprintf(genutzte(4)),p.positions(blpos2), 600, p.fix_col);
-    %for i = 1:4
-        %Screen('DrawText', ps.window, genutzte(i), p.positions(i),  600, p.fix_col);
     DrawFormattedText(ps.window, alphabet(perm(1)), ps.xCenter, ps.yCenter-p.stim_dist, p.fix_col);
     DrawFormattedText(ps.window, alphabet(perm(2)), ps.xCenter, ps.yCenter+p.stim_dist, p.fix_col);
     DrawFormattedText(ps.window, alphabet(perm(3)), ps.xCenter-p.stim_dist, ps.yCenter, p.fix_col);
     DrawFormattedText(ps.window, alphabet(perm(4)), ps.xCenter+p.stim_dist, ps.yCenter, p.fix_col);
-   % end
-    %wir probieren nochmal flip
-    t.time3=Screen('Flip', ps.window, t.time2+buchstabenend);
-    %nochmal die Figuren
+    t.time3=Screen('Flip', ps.window, buchstabenend);
+    %Ende des zweiten Präsentationsteils
+    %Fixationskreuz
     Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
-    %Distraktor
-    Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), 45, [], [], p.distr_col);
-    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(distr_pos,:,dot_distr_pos), [], [], [], p.dot_distr_col);
-    %Target
-    Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col);
-    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(target_pos,:,dot_target_pos), [], [], [], p.dot_target_col);
-    %Kreis
-    Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) 
-    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos1,:,randi(2)), [], [], [], p.dot_BL_col);
-    % und jetzt kommt das Sechseck
-    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1);
-    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
-    %und jetzt die Rauten
-%     DrawFormattedText(ps.window, sprintf('#'),p.positions(distr_pos), 600, p.fix_col);
-%     DrawFormattedText(ps.window, sprintf('#'),p.positions(target_pos), 600, p.fix_col);
-%     DrawFormattedText(ps.window, sprintf('#'),p.positions(blpos1), 600, p.fix_col);
-%     DrawFormattedText(ps.window, sprintf('#'),p.positions(blpos2), 600, p.fix_col);
-    for i = 1:4
-        Screen('DrawText', ps.window, '#', p.positions(i), 600, p.fix_col);
-    end
-    t.time4=Screen('Flip', ps.window, t.time3+hashtagend);
+    %Figuren
+    Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), 45, [], [], p.distr_col); %Distraktor
+    Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col); %Target
+    Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) %Kreis
+    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1); %Sechseck
+    %Rauten
+    DrawFormattedText(ps.window, sprintf('#'), ps.xCenter, ps.yCenter-p.stim_dist, p.fix_col);
+    DrawFormattedText(ps.window, sprintf('#'), ps.xCenter, ps.yCenter+p.stim_dist, p.fix_col);
+    DrawFormattedText(ps.window, sprintf('#'), ps.xCenter-p.stim_dist, ps.yCenter, p.fix_col);
+    DrawFormattedText(ps.window, sprintf('#'), ps.xCenter+p.stim_dist, ps.yCenter, p.fix_col);
+    t.time4=Screen('Flip', ps.window, hashtagend);
 end
 
 if strcmp(trialstruct.condition,'p2') || strcmp(trialstruct.condition,'s2') %dann brauchen wir Sechseck, Kreis und Quadrat als BL
@@ -227,7 +208,7 @@ Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix
 
 if trialstruct.condition(1) == 's'
     t.time2=Screen('Flip', ps.window, t.time1+pre_fix_end);
-    lptwrite(1,trigger,500);
+%     lptwrite(1,trigger,500);
 
 % draw image of trial
 % img = Screen('GetImage', ps.window);
@@ -278,7 +259,18 @@ if trialstruct.condition(1) == 's'
             r.FART = time;
         end
     end
-end
+else %probe trial condition
+    r.hit = nan;
+    r.RT = nan;
+    r.error = nan;
+    r.errorRT = nan;
+    r.miss = nan;
+    r.FA = nan;
+    r.FART = nan;
+    r.dFA = nan;
+    r.dFART = nan;
+end    
+    
 
 
 
