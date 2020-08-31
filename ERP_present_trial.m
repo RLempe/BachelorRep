@@ -31,6 +31,7 @@ pre_fix_end = p.pre_fix_min+jitter;
 stim_end = pre_fix_end+p.stim_duration;
 buchstabenend = stim_end + p.probe_buchstabendauer;
 hashtagend = buchstabenend + p.probe_hashtagdauer;
+textgroesse = 60;
 
 
 if trialstruct.condition(1) == 's'
@@ -104,7 +105,7 @@ if strcmp(trialstruct.condition,'p1') || strcmp(trialstruct.condition,'p4') % da
     Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1);
     Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
     t.time2=Screen('Flip', ps.window, t.time1+pre_fix_end);
-    %Ende des ersten Präsentationsteils
+    %Ende des ersten Prï¿½sentationsteils
     %Fixationskreuz
     Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     %Figuren
@@ -113,14 +114,23 @@ if strcmp(trialstruct.condition,'p1') || strcmp(trialstruct.condition,'p4') % da
     Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) %Kreis
     Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1); %Sechseck
     %und jetzt kommen die Buchstaben
+    [window1, window1Rect] = PsychImaging('OpenWindow', p.scr_screen, p.background_col, [ps.xCenter-textgroesse/2, ps.yCenter-p.stim_dist-textgroesse/2, textgroesse, textgroesse]);
+    [window2, window2Rect] = PsychImaging('OpenWindow', p.scr_screen, p.background_col, [ps.xCenter+p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, textgroesse, textgroesse]);
+    [window3, window3Rect] = PsychImaging('OpenWindow', p.scr_screen, p.background_col, [ps.xCenter-textgroesse/2, ps.yCenter+p.stim_dist-textgroesse/2, textgroesse, textgroesse]);
+    [window4, window4Rect] = PsychImaging('OpenWindow', p.scr_screen, p.background_col, [ps.xCenter-p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, textgroesse, textgroesse]);
     alphabet = 'A' : 'Z';
     perm = randperm(26);
-    DrawFormattedText(ps.window, alphabet(perm(1)), ps.xCenter, ps.yCenter-p.stim_dist, p.fix_col);
-    DrawFormattedText(ps.window, alphabet(perm(2)), ps.xCenter, ps.yCenter+p.stim_dist, p.fix_col);
-    DrawFormattedText(ps.window, alphabet(perm(3)), ps.xCenter-p.stim_dist, ps.yCenter, p.fix_col);
-    DrawFormattedText(ps.window, alphabet(perm(4)), ps.xCenter+p.stim_dist, ps.yCenter, p.fix_col);
-    t.time3=Screen('Flip', ps.window, buchstabenend);
-    %Ende des zweiten Präsentationsteils
+    Screen('TextSize',ps.window, textgroesse);
+%     DrawFormattedText(ps.window, alphabet(perm(1)), ps.xCenter-textgroesse/4, ps.yCenter-p.stim_dist+textgroesse/4, p.fix_col);
+%     DrawFormattedText(ps.window, alphabet(perm(3)), ps.xCenter-textgroesse/4, ps.yCenter+p.stim_dist+textgroesse/4, p.fix_col);
+%     DrawFormattedText(ps.window, alphabet(perm(4)), ps.xCenter-p.stim_dist-textgroesse/4, ps.yCenter+textgroesse/4, p.fix_col);
+%     DrawFormattedText(ps.window, alphabet(perm(2)), ps.xCenter+p.stim_dist-textgroesse/4, ps.yCenter+textgroesse/4, p.fix_col);
+    DrawFormattedText(window1, alphabet(perm(1)), 'center', 'center', p.fix_col);
+    DrawFormattedText(window2, alphabet(perm(2)), 'center', 'center', p.fix_col);
+    DrawFormattedText(window3, alphabet(perm(3)), 'center', 'center', p.fix_col);
+    DrawFormattedText(window4, alphabet(perm(4)), 'center', 'center', p.fix_col);
+    t.time3=Screen('Flip', ps.window, t.time1+buchstabenend);
+    %Ende des zweiten Prï¿½sentationsteils
     %Fixationskreuz
     Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     %Figuren
@@ -133,7 +143,7 @@ if strcmp(trialstruct.condition,'p1') || strcmp(trialstruct.condition,'p4') % da
     DrawFormattedText(ps.window, sprintf('#'), ps.xCenter, ps.yCenter+p.stim_dist, p.fix_col);
     DrawFormattedText(ps.window, sprintf('#'), ps.xCenter-p.stim_dist, ps.yCenter, p.fix_col);
     DrawFormattedText(ps.window, sprintf('#'), ps.xCenter+p.stim_dist, ps.yCenter, p.fix_col);
-    t.time4=Screen('Flip', ps.window, hashtagend);
+    t.time4=Screen('Flip', ps.window, t.time1+hashtagend);
 end
 
 if strcmp(trialstruct.condition,'p2') || strcmp(trialstruct.condition,'s2') %dann brauchen wir Sechseck, Kreis und Quadrat als BL
