@@ -18,7 +18,7 @@ function run_LuckyFeat(sub,cond,train,isolum,start_block)
     %   1
     % 4   2   target+distractor positions (0 is no T or D)
     %   3
-    %
+    % old conditions
     % TLDV
     % target lateral (right), distractor vertikal (random) 21 / 23
     % target lateral (left), distractor vertikal (random) 41 / 43
@@ -62,7 +62,8 @@ p.isolum_background = [0.5 0.5 0.5];
 %p.trials_per_cond   = 80; %100 must be a even number to enable even distribution of vertical positions
 %p.conditions        = {'TLrDV', 'TLlDV','TVDLr','TVDLl','TLrDN','TLlDN','TNDLr','TNDLl','BL'};
 
-p.conditions = {'p1', 's1', 'p2', 's2', 'p3', 's3', 'p4', 's4', 'p5', 's5', 'p6', 's6'};
+%p.conditions = {'p1', 's1', 'p2', 's2', 'p3', 's3', 'p4', 's4', 'p5', 's5', 'p6', 's6'};
+p.conditions = {'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 's1', 's2', 's3', 's4', 's5', 's6'};
 
 p.trials_per_probe = 72;
 p.trials_per_search = 108;
