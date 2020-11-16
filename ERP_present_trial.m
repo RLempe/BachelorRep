@@ -6,6 +6,8 @@ target_pos = trialstruct.target_pos;
 distr_pos = trialstruct.distr_pos;
 dot_target_pos = trialstruct.dot_target_pos;
 dot_distr_pos = trialstruct.dot_distr_pos;
+alphabet = 'A' : 'Z';
+perm=trialstruct.perm;
 trigger = str2num([num2str(target_pos) num2str(distr_pos)]);
 if ~trigger
     trigger = 100;
@@ -72,7 +74,7 @@ if distr_pos                        % draw distractor (with dots) if present
     end
 end
 
-%Conditions S1 und S4
+%Conditions S1 und S4 stimmt so
 if strcmp(trialstruct.condition,'s1') || strcmp(trialstruct.condition,'s4') % dann brauchen wir Sechseck und Kreis als BL
     s = sqrt(2)*p.stim_size/(sqrt(3)*sqrt(sqrt(3)));
     h = sqrt(3)*s;
@@ -89,8 +91,61 @@ if strcmp(trialstruct.condition,'s1') || strcmp(trialstruct.condition,'s4') % da
     Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
 end
 
-%Conditions P1 und P4
-if strcmp(trialstruct.condition,'p1') || strcmp(trialstruct.condition,'p4') % dann brauchen wir Sechseck und Kreis als BL
+if strcmp(trialstruct.condition,'p1') % dann brauchen wir Sechseck und Kreis als BL
+    Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
+    s = sqrt(2)*p.stim_size/(sqrt(3)*sqrt(sqrt(3)));
+    h = sqrt(3)*s;
+    s=round(s);
+    h=round(h);
+    r4 = randperm(2);
+    blpos1 = pos_pool(r4(1));
+    blpos2 = pos_pool(r4(2));
+    %Kreis
+    Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) 
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos1,:,randi(2)), [], [], [], p.dot_BL_col);
+    %Sechseck
+    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1);
+    Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(blpos2,:,randi(2)), [], [], [], p.dot_BL_col);
+    t.time2=Screen('Flip', ps.window, t.time1+stim_end);
+    %Ende des ersten Praesentationsteils
+    %Fixationskreuz
+    Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
+    %Figuren
+    s3 = 2*p.stim_size/(sqrt(sqrt(3)));
+    h3 = 0.5*sqrt(3)*s3;
+    s3=round(s3);
+    h3=round(h3);
+    Screen('FillPoly',ps.window,p.distr_col,[(p.positions(distr_pos,1)-0.5*s3) (p.positions(distr_pos,1)+0.5*s3) p.positions(distr_pos,1);(p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)-(2/3)*h3)]'); %Distraktor
+    Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col); %Target
+    Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) %Kreis
+    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1); %Sechseck
+    %und jetzt kommen die Buchstaben
+%     alphabet = 'A' : 'Z';
+%     perm = randperm(26);
+    Screen('TextSize',ps.window, textgroesse);
+    DrawFormattedText(ps.window, alphabet(perm(1)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter-p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter-p.stim_dist+textgroesse/2]);
+    DrawFormattedText(ps.window, alphabet(perm(2)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter+p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
+    DrawFormattedText(ps.window, alphabet(perm(3)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter+p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter+p.stim_dist+textgroesse/2]);
+    DrawFormattedText(ps.window, alphabet(perm(4)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter-p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
+    t.time3=Screen('Flip', ps.window, t.time1+buchstabenend);
+    %Ende des zweiten Prï¿½sentationsteils
+    %Fixationskreuz
+    Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
+    %Figuren
+    Screen('TextSize',ps.window, textgroesse*hashtagskalar);
+    Screen('FillPoly',ps.window,p.distr_col,[(p.positions(distr_pos,1)-0.5*s3) (p.positions(distr_pos,1)+0.5*s3) p.positions(distr_pos,1);(p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)-(2/3)*h3)]'); %Distraktor
+    Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col); %Target
+    Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) %Kreis
+    Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1); %Sechseck
+    %Rauten
+    DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter-p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter-p.stim_dist+textgroesse/2]);
+    DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter+p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
+    DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter+p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter+p.stim_dist+textgroesse/2]);
+    DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter-p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
+    t.time4=Screen('Flip', ps.window, t.time1+hashtagend);
+end
+
+if strcmp(trialstruct.condition,'p4') % dann brauchen wir Sechseck und Kreis als BL
     Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     s = sqrt(2)*p.stim_size/(sqrt(3)*sqrt(sqrt(3)));
     h = sqrt(3)*s;
@@ -115,8 +170,8 @@ if strcmp(trialstruct.condition,'p1') || strcmp(trialstruct.condition,'p4') % da
     Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], p.BL_col) %Kreis
     Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1); %Sechseck
     %und jetzt kommen die Buchstaben
-    alphabet = 'A' : 'Z';
-    perm = randperm(26);
+%     alphabet = 'A' : 'Z';
+%     perm = randperm(26);
     Screen('TextSize',ps.window, textgroesse);
     DrawFormattedText(ps.window, alphabet(perm(1)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter-p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter-p.stim_dist+textgroesse/2]);
     DrawFormattedText(ps.window, alphabet(perm(2)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter+p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
@@ -141,6 +196,7 @@ if strcmp(trialstruct.condition,'p1') || strcmp(trialstruct.condition,'p4') % da
 end
 
 if  strcmp(trialstruct.condition,'p2') %dann brauchen wir Sechseck, Kreis und Quadrat als BL
+    Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     s = sqrt(2)*p.stim_size/(sqrt(3)*sqrt(sqrt(3)));
     h = sqrt(3)*s;
     s=round(s);
@@ -168,8 +224,8 @@ if  strcmp(trialstruct.condition,'p2') %dann brauchen wir Sechseck, Kreis und Qu
     Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1); %Sechseck
     Screen('DrawTexture', ps.window, tex.quadrat, [],  p.pos_rects(blpos3,:), 0, [], [], p.BL_col); %Quadrat
     %und jetzt kommen die Buchstaben
-    alphabet = 'A' : 'Z';
-    perm = randperm(26);
+%     alphabet = 'A' : 'Z';
+%     perm = randperm(26);
     Screen('TextSize',ps.window, textgroesse);
     DrawFormattedText(ps.window, alphabet(perm(1)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter-p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter-p.stim_dist+textgroesse/2]);
     DrawFormattedText(ps.window, alphabet(perm(2)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter+p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
@@ -214,6 +270,7 @@ if  strcmp(trialstruct.condition,'s2') %dann brauchen wir Sechseck, Kreis und Qu
 end
 
 if  strcmp(trialstruct.condition,'p3') %dann brauchen wir Sechseck, Kreis und Dreieck als BL
+    Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     s = sqrt(2)*p.stim_size/(sqrt(3)*sqrt(sqrt(3)));
     h = sqrt(3)*s;
     s=round(s);
@@ -245,8 +302,8 @@ if  strcmp(trialstruct.condition,'p3') %dann brauchen wir Sechseck, Kreis und Dr
     Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1); %Sechseck
     Screen('FillPoly',ps.window,p.BL_col,[(p.positions(blpos3,1)-0.5*s2) (p.positions(blpos3,1)+0.5*s2) p.positions(blpos3,1);(p.positions(blpos3,2)+(1/3)*h2) (p.positions(blpos3,2)+(1/3)*h2) (p.positions(blpos3,2)-(2/3)*h2)]'); %Dreieck
     %und jetzt kommen die Buchstaben
-    alphabet = 'A' : 'Z';
-    perm = randperm(26);
+%     alphabet = 'A' : 'Z';
+%     perm = randperm(26);
     Screen('TextSize',ps.window, textgroesse);
     DrawFormattedText(ps.window, alphabet(perm(1)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter-p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter-p.stim_dist+textgroesse/2]);
     DrawFormattedText(ps.window, alphabet(perm(2)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter+p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
@@ -295,6 +352,7 @@ if  strcmp(trialstruct.condition,'s3') %dann brauchen wir Sechseck, Kreis und Dr
 end
     
 if strcmp(trialstruct.condition,'p5') %dann brauchen wir zwei Quadrate als BL
+    Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     for bl = 1:length(pos_pool)    
       Screen('DrawTexture',ps.window, tex.quadrat, [], p.pos_rects(pos_pool(bl),:), 0, [], [], p.BL_col) 
       Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col);
@@ -304,15 +362,19 @@ if strcmp(trialstruct.condition,'p5') %dann brauchen wir zwei Quadrate als BL
     %Fixationskreuz
     Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     %Figuren
-    Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), 45, [], [], p.distr_col); %Distraktor
+    s3 = 2*p.stim_size/(sqrt(sqrt(3)));
+    h3 = 0.5*sqrt(3)*s3;
+    s3=round(s3);
+    h3=round(h3);
+    Screen('FillPoly',ps.window,p.distr_col,[(p.positions(distr_pos,1)-0.5*s3) (p.positions(distr_pos,1)+0.5*s3) p.positions(distr_pos,1);(p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)-(2/3)*h3)]'); %Distraktor
     Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col); %Target
     for bl = 1:length(pos_pool)    
      Screen('DrawTexture',ps.window, tex.quadrat, [], p.pos_rects(pos_pool(bl),:), 0, [], [], p.BL_col) 
      Screen('DrawTexture', ps.window, tex.dot, [], p.dot_rects(pos_pool(bl),:,randi(2)), [], [], [], p.dot_BL_col);
     end
     %und jetzt kommen die Buchstaben
-    alphabet = 'A' : 'Z';
-    perm = randperm(26);
+%     alphabet = 'A' : 'Z';
+%     perm = randperm(26);
     Screen('TextSize',ps.window, textgroesse);
     DrawFormattedText(ps.window, alphabet(perm(1)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter-p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter-p.stim_dist+textgroesse/2]);
     DrawFormattedText(ps.window, alphabet(perm(2)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter+p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
@@ -324,7 +386,7 @@ if strcmp(trialstruct.condition,'p5') %dann brauchen wir zwei Quadrate als BL
     Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     %Figuren
     Screen('TextSize',ps.window, textgroesse*hashtagskalar);
-    Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), 45, [], [], p.distr_col); %Distraktor
+    Screen('FillPoly',ps.window,p.distr_col,[(p.positions(distr_pos,1)-0.5*s3) (p.positions(distr_pos,1)+0.5*s3) p.positions(distr_pos,1);(p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)-(2/3)*h3)]'); %Distraktor
     Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col); %Target
     for bl = 1:length(pos_pool)    
      Screen('DrawTexture',ps.window, tex.quadrat, [], p.pos_rects(pos_pool(bl),:), 0, [], [], p.BL_col) 
@@ -359,6 +421,7 @@ if strcmp(trialstruct.condition,'s6') %dann brauchen wir zwei schiefe Quadrate a
 end 
 
 if  strcmp(trialstruct.condition,'p6') %dann brauchen wir zwei schiefe Quadrate als BL
+    Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     blpos1 = pos_pool(1);
     blpos2 = pos_pool(2);
     r1 = randi(2);
@@ -382,13 +445,17 @@ if  strcmp(trialstruct.condition,'p6') %dann brauchen wir zwei schiefe Quadrate 
     %Fixationskreuz
     Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     %Figuren
+    s3 = 2*p.stim_size/(sqrt(sqrt(3)));
+    h3 = 0.5*sqrt(3)*s3;
+    s3=round(s3);
+    h3=round(h3);
+    Screen('FillPoly',ps.window,p.distr_col,[(p.positions(distr_pos,1)-0.5*s3) (p.positions(distr_pos,1)+0.5*s3) p.positions(distr_pos,1);(p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)-(2/3)*h3)]'); %Distraktor
     Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col); %Target
-    Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), 45, [], [], p.distr_col); %Distraktor
     Screen('DrawTexture',ps.window, tex.quadrat, [], p.pos_rects(blpos1,:), neigung1, [], [], p.BL_col); %ein schiefes Quadrat
     Screen('DrawTexture',ps.window, tex.quadrat, [], p.pos_rects(blpos2,:), neigung2, [], [], p.BL_col); %anderes schiefes Quadrat
     %und jetzt kommen die Buchstaben
-    alphabet = 'A' : 'Z';
-    perm = randperm(26);
+%     alphabet = 'A' : 'Z';
+%     perm = randperm(26);
     Screen('TextSize',ps.window, textgroesse);
     DrawFormattedText(ps.window, alphabet(perm(1)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter-p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter-p.stim_dist+textgroesse/2]);
     DrawFormattedText(ps.window, alphabet(perm(2)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter+p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
@@ -400,8 +467,8 @@ if  strcmp(trialstruct.condition,'p6') %dann brauchen wir zwei schiefe Quadrate 
     Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
     %Figuren
     Screen('TextSize',ps.window, textgroesse*hashtagskalar);
+    Screen('FillPoly',ps.window,p.distr_col,[(p.positions(distr_pos,1)-0.5*s3) (p.positions(distr_pos,1)+0.5*s3) p.positions(distr_pos,1);(p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)+(1/3)*h3) (p.positions(distr_pos,2)-(2/3)*h3)]'); %Distraktor
     Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col); %Target
-    Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), 45, [], [], p.distr_col); %Distraktor
     Screen('DrawTexture',ps.window, tex.quadrat, [], p.pos_rects(blpos1,:), neigung1, [], [], p.BL_col); %ein schiefes Quadrat
     Screen('DrawTexture',ps.window, tex.quadrat, [], p.pos_rects(blpos2,:), neigung2, [], [], p.BL_col); %anderes schiefes Quadrat
     %Rauten
@@ -471,7 +538,7 @@ if trialstruct.condition(1) == 's'
             r.FART = time;
         end
     end
-else %probe trial condition
+else %probe trial condition, hier die buchstabenabfrage machen
     r.hit = nan;
     r.RT = nan;
     r.error = nan;
@@ -483,7 +550,7 @@ else %probe trial condition
     r.dFART = nan;
 end    
     
-%hier die if-schleife für probe trials (buchstabenabfrage)
+
 
 
 %WaitSecs('UntilTime',t.time4+p.ITI); %cumulative timing

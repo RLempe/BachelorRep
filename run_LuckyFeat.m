@@ -69,7 +69,7 @@ p.trials_per_probe = 72;
 p.trials_per_search = 108;
 % nur fürs testen, wo probe und search noch nicht!! getrennt programmiert
 % ist
-p.trials_per_cond = (72+108)/2;
+%p.trials_per_cond = (72+108)/2;
 % die muss dann unbedingt raus und in der trialstruct geändert werden
 
 
@@ -130,9 +130,9 @@ p.post_fix_min      = 1.2;  % equals response window
 %p.stim_duration     = .100;
 
 
-p.probe_buchstabendauer = 2;
-p.probe_hashtagdauer = 2;
-p.stim_duration     = 2; 
+p.probe_buchstabendauer = 1;
+p.probe_hashtagdauer = 1;
+p.stim_duration     = 1; 
 p.ITI               = .550; 
 % total trial duration is 500 + 100 + 1200 + 550 = 2.35 sec + jitter! [2.35-3.35 sec]
 

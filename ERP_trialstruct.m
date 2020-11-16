@@ -81,6 +81,9 @@ for c = 1:6
         trialstruct(idx).dot_target_pos = randi(2);
         trialstruct(idx).dot_distr_pos = randi(2);
         trialstruct(idx).jitter = p.jitter(randi(length(p.jitter)));
+        perm=randperm(26);
+        perm2=perm(1:4);
+        trialstruct(idx).perm=perm2;
     end
 end
 
@@ -161,6 +164,9 @@ for c = 1:6
         trialstruct(idx).dot_target_pos = randi(2);
         trialstruct(idx).dot_distr_pos = randi(2);
         trialstruct(idx).jitter = p.jitter(randi(length(p.jitter)));
+        perm=randperm(26);
+        perm2=perm(1:4);
+        trialstruct(idx).perm=perm2;
     end
 end
 
@@ -190,6 +196,7 @@ trialstruct_neu(1).distr_pos=0;
 trialstruct_neu(1).dot_target_pos=0;
 trialstruct_neu(1).dot_distr_pos=0;
 trialstruct_neu(1).jitter=0;
+trialstruct_neu(1).perm = randperm(4);
 for i = 1:1080
     dieseauswahl=[];
     dieseauswahl(1).condition="";
@@ -198,6 +205,7 @@ for i = 1:1080
     dieseauswahl(1).dot_target_pos=0;
     dieseauswahl(1).dot_distr_pos=0;
     dieseauswahl(1).jitter=0; 
+    dieseauswahl(1).perm = randperm(4);
     if nprobe <= maxprobe
         dieseauswahl(1) = proberand(nprobe);
     end
