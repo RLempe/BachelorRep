@@ -478,10 +478,6 @@ if  strcmp(trialstruct.condition,'p6') %dann brauchen wir zwei schiefe Quadrate 
     DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter-p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter-p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
     t.time4=Screen('Flip', ps.window, t.time1+hashtagend);
 end
-    
-    
-% Hier bitte If-Schleife machen: f�r search task: das Zeug. f�r Probe Task:
-% das Array
 
 Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col); %add fixation cross
 
@@ -538,6 +534,10 @@ if trialstruct.condition(1) == 's'
             r.FART = time;
         end
     end
+    r.buchstaben='';
+    
+    %WaitSecs('UntilTime',t.time4+p.ITI); %cumulative timing
+    WaitSecs('UntilTime',t.time1+ITI_end);
 else %probe trial condition, hier die buchstabenabfrage machen
     r.hit = nan;
     r.RT = nan;
@@ -548,6 +548,45 @@ else %probe trial condition, hier die buchstabenabfrage machen
     r.FART = nan;
     r.dFA = nan;
     r.dFART = nan;
+    
+    unfertig = true;
+    ansbuchst=['','','',''];
+%     ansbuchst(2)='';
+%     ansbuchst(3)='';
+%     ansbuchst(4)='';
+    abstand = 100;
+    akt=1;
+    while unfertig == true
+        DrawFormattedText(ps.window, sprintf('An welche Buchstaben erinnern Sie sich?'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter, ps.yCenter-20-300, ps.xCenter, ps.yCenter-20+300]);
+        [keyIsDown, secs, keyCode] = KbCheck;
+        %taste = find(keyCode);
+        if keyCode == KbName('Return')
+            Screen('Flip', ps.window, secs);
+            unfertig = false;
+        else
+            for i = 1:akt-1
+                DrawFormattedText(ps.window, sprintf(ansbuchst(i)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter+textgroesse/2]);
+            end
+            if ((keyCode == KbName('DELETE')) & (akt > 1))
+                ansbuchst(akt)='';
+                akt = akt-1;
+                Screen('Flip',ps.window,secs);
+            else
+                if akt <5
+                    dieser = KbName(keyCode);
+                    ansbuchst(akt) = dieser;
+                    akt = akt +1;
+                    DrawFormattedText(ps.window, sprintf(ansbuchst(akt)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
+                    Screen('Flip', ps.window, secs+0.5);
+                else
+                    Screen('Flip',ps.window, secs);
+                end    
+            end    
+        end    
+    end
+    r.buchstaben=ansbuchst;
+    
+    
 end    
     
 
