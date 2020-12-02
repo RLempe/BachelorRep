@@ -550,34 +550,38 @@ else %probe trial condition, hier die buchstabenabfrage machen
     r.dFART = nan;
     
     unfertig = true;
-    ansbuchst=['','','',''];
+    ansbuchst={'','','',''};
 %     ansbuchst(2)='';
 %     ansbuchst(3)='';
 %     ansbuchst(4)='';
     abstand = 100;
     akt=1;
+    n=0;
     while unfertig == true
+        n=n+1;
         DrawFormattedText(ps.window, sprintf('An welche Buchstaben erinnern Sie sich?'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter, ps.yCenter-20-300, ps.xCenter, ps.yCenter-20+300]);
         [keyIsDown, secs, keyCode] = KbCheck;
         %taste = find(keyCode);
-        if keyCode == KbName('Return')
+        if keyCode(KbName('Return'))
             Screen('Flip', ps.window, secs);
             unfertig = false;
         else
             for i = 1:akt-1
-                DrawFormattedText(ps.window, sprintf(ansbuchst(i)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter+textgroesse/2]);
+                DrawFormattedText(ps.window, sprintf(ansbuchst{i}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter+textgroesse/2]);
             end
-            if ((keyCode == KbName('DELETE')) & (akt > 1))
-                ansbuchst(akt)='';
+            if (keyCode(KbName('DELETE')) && (akt > 1))
+                ansbuchst{akt}='';
                 akt = akt-1;
                 Screen('Flip',ps.window,secs);
             else
                 if akt <5
                     dieser = KbName(keyCode);
-                    ansbuchst(akt) = dieser;
-                    akt = akt +1;
-                    DrawFormattedText(ps.window, sprintf(ansbuchst(akt)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
+                    if ~isempty(dieser)
+                        ansbuchst{akt} = dieser;
+                    end
+                    DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
                     Screen('Flip', ps.window, secs+0.5);
+                    akt = akt +1;
                 else
                     Screen('Flip',ps.window, secs);
                 end    

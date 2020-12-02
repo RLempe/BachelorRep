@@ -49,7 +49,7 @@ start_block =1;
 Screen('Preference', 'SkipSyncTests', 1);
 
 Testing = 0;
-p.scr_screen = 2;
+p.scr_screen = 1;
 %p.scr_refrate = 120;
 p.scr_refrate = 60;
 %p.scr_res = [1920 1080];
@@ -138,7 +138,8 @@ p.ITI               = .550;
 
 % Logpath
 % p.logpath           = '/home/pc/matlab/user/maria/ERP/Logs/';
-p.logpath = 'R:\MATLAB\BachelorRep\Logs\';
+% p.logpath = 'R:\MATLAB\BachelorRep\Logs\';
+p.logpath = pwd;
 format shortg; starttime = clock;
 p.timestamp         = [num2str(starttime(1)),'-',num2str(starttime(2)),'-',num2str(starttime(3)),'_',num2str(starttime(4)),'-',num2str(starttime(5))];
 %p.timestamp         = '';
