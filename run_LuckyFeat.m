@@ -1,4 +1,4 @@
-function run_LuckyFeat(sub,cond,train,isolum,start_block)
+function run_LuckyFeat(sub,train,isolum,start_block)
 %simple ERP-Experiment with four target, distractor and/or baseline stimuli; no flicker
     
     % to first show a few trials without isoluminance adjustment and maxially dark dot
@@ -38,11 +38,10 @@ function run_LuckyFeat(sub,cond,train,isolum,start_block)
 
 %% Parameter zur Testung ohne Funktionseingabe
 sub = 98;
-%cond = 1;
-train = 0;
+train = 1;
 isolum = 0;
 start_block =1;
-    
+
 
 %% Parameters
 % Screen Parameters
@@ -67,16 +66,12 @@ p.conditions = {'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 's1', 's2', 's3', 's4', 's5'
 
 p.trials_per_probe = 72;
 p.trials_per_search = 108;
-% nur fürs testen, wo probe und search noch nicht!! getrennt programmiert
-% ist
-%p.trials_per_cond = (72+108)/2;
-% die muss dann unbedingt raus und in der trialstruct geändert werden
 
 
 p.trials_total = p.trials_per_probe*(1/2)*length(p.conditions) + p.trials_per_search*(1/2)*length(p.conditions);
 p.n_blocks = 24; %willkürlich festgelegt
 p.trials_per_block = p.trials_total/p.n_blocks;
-p.train_trials = 2*48; %nach Gaspelin et al.
+p.train_trials = 48; %nach Gaspelin et al.
 
 % Stimulus definition
 p.stim_start_cols   = [0 1 0; 1 .4 0];
@@ -368,7 +363,7 @@ start_trial = p.trials_per_block*start_block-p.trials_per_block+1;
 block_nr = start_block;
 %Initialize structures for trial timing, trial responses, and blockwise behavioral analysis
 timing(1:p.trials_total)=struct('time1',0,'time2',0,'time3',0,'time4',0);
-response(1:p.trials_total)=struct('condition',nan,'hit',0,'RT',0,'error',0,'errorRT',0,'miss',0,'FA',0,'FART',0,'dFA',0,'dFART',0); %FIX? include target true/false and distractor true/false to response struct?
+response(1:p.trials_total)=struct('condition',nan,'hit',0,'RT',0,'error',0,'errorRT',0,'miss',0,'FA',0,'FART',0,'dFA',0,'dFART',0,'buchstaben',0); %FIX? include target true/false and distractor true/false to response struct?
 behavior(1:p.n_blocks) = struct('hitrate',0,'errorrate',0,'FArate',0,'meanRT',0);
 
 for t = start_trial:p.trials_total
@@ -424,11 +419,16 @@ for t = start_trial:p.trials_total
         DrawFormattedText(ps.window, sprintf('Fehlerrate:  %1.0f %%',behavior(block_nr).errorrate*100),'center', 650, p.fix_col);
         DrawFormattedText(ps.window, sprintf('Rate Falscher Alarme:  %1.0f %%',behavior(block_nr).FArate*100),'center', 700, p.fix_col);             
         DrawFormattedText(ps.window, sprintf('Reaktionszeit:  %1.0f ms',behavior(block_nr).meanRT*1000),'center', 750, p.fix_col);
+        
+        DrawFormattedText(ps.window, sprintf('Richtige Buchstaben:  %1.0f %%',t_behavior.richtige*100),'center', 750, p.fix_col);
 
         fprintf(1,'\n###\nRichtige Reaktionen:  %1.0f %%',behavior(block_nr).hitrate*100)
         fprintf(1,'\nFehlerrate:  %1.0f %%',behavior(block_nr).errorrate*100)
         fprintf(1,'\nRate Falscher Alarme:  %1.0f %%',behavior(block_nr).FArate*100)
         fprintf(1,'\nReaktionszeit:  %1.0f ms\n###\n',behavior(block_nr).meanRT*1000)
+        
+        fprintf(1,'\nRichtige Buchstaben:  %1.0f %%\n###\n',t_behavior.richtige*100)
+        
         Screen('Flip', ps.window, 0);
         
         block_nr = block_nr+1;

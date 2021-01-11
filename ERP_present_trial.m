@@ -26,6 +26,7 @@ r.FA = nan;
 r.FART = nan;
 r.dFA = nan;
 r.dFART = nan;
+r.buchstaben = nan;
 % timing structure (base all timing on trial start, to prevent cumulation of delay)
 
 %hier arbeiten: timings festlegen (am besten in run_luckyfeat)
@@ -550,39 +551,74 @@ else %probe trial condition, hier die buchstabenabfrage machen
     r.dFART = nan;
     
     unfertig = true;
-    ansbuchst=['','','',''];
-%     ansbuchst(2)='';
-%     ansbuchst(3)='';
-%     ansbuchst(4)='';
-    abstand = 100;
+    ansbuchst={'','','',''};
+    abstand = 400;
     akt=1;
+    n=0;
+    RestrictKeysForKbCheck(KbName({'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','backspace','Return'}));
+%     DrawFormattedText(ps.window, sprintf('An welche Buchstaben erinnern Sie sich?'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter, ps.yCenter-20-300, ps.xCenter, ps.yCenter-20+300]);
     while unfertig == true
-        DrawFormattedText(ps.window, sprintf('An welche Buchstaben erinnern Sie sich?'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter, ps.yCenter-20-300, ps.xCenter, ps.yCenter-20+300]);
-        [keyIsDown, secs, keyCode] = KbCheck;
-        %taste = find(keyCode);
-        if keyCode == KbName('Return')
-            Screen('Flip', ps.window, secs);
-            unfertig = false;
-        else
-            for i = 1:akt-1
-                DrawFormattedText(ps.window, sprintf(ansbuchst(i)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter+textgroesse/2]);
-            end
-            if ((keyCode == KbName('DELETE')) & (akt > 1))
-                ansbuchst(akt)='';
-                akt = akt-1;
-                Screen('Flip',ps.window,secs);
-            else
-                if akt <5
-                    dieser = KbName(keyCode);
-                    ansbuchst(akt) = dieser;
-                    akt = akt +1;
-                    DrawFormattedText(ps.window, sprintf(ansbuchst(akt)), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
-                    Screen('Flip', ps.window, secs+0.5);
-                else
-                    Screen('Flip',ps.window, secs);
-                end    
+        n=n+1;
+        DrawFormattedText(ps.window, sprintf('An welche Buchstaben erinnern Sie sich?'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter, ps.yCenter-200-300, ps.xCenter, ps.yCenter-200+300]);
+        Screen('Flip',ps.window,[],1);
+        gedrueckt = false;
+        while ~gedrueckt
+            try
+                [keyIsDown, secs, keyCode] = KbCheck;
+                if keyIsDown 
+                    gedrueckt = true;
+                end
+            catch ME 
+                fprintf('test1');
             end    
-        end    
+        end
+        try
+            if keyCode(KbName('Return'))
+                Screen('Flip', ps.window);
+                unfertig = false;
+            else
+                for i = 1:(akt-1)
+                    DrawFormattedText(ps.window, sprintf(ansbuchst{i}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter+textgroesse/2]);
+                end
+                if (keyCode(KbName('backspace')) && (akt > 1))
+                    ansbuchst{akt-1}='';
+                    akt = akt-1;
+                    % WaitSecs(0.5);
+                    Screen('Flip',ps.window);
+                    DrawFormattedText(ps.window, sprintf('An welche Buchstaben erinnern Sie sich?'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter, ps.yCenter-200-300, ps.xCenter, ps.yCenter-200+300]);
+                    Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
+                    for i = 1:(akt-1)
+                    DrawFormattedText(ps.window, sprintf(ansbuchst{i}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter+textgroesse/2]);
+                    end
+                    Screen('Flip',ps.window,[],1);
+                    WaitSecs(0.5);
+                else
+                if akt <5 %keine doppelten Buchstaben!
+                    dieser = KbName(keyCode);
+    %                 DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
+                    doppelt = false;
+                    for i = 1:akt
+                        if ansbuchst{i} == upper(dieser)
+                            doppelt = true;
+                        end    
+                    end    
+                    if (~isempty(dieser) && ~doppelt)
+                        ansbuchst{akt} = upper(dieser);
+                        DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
+                        akt = akt +1;
+                        Screen('Flip',ps.window,[],1);
+                        WaitSecs(0.5);
+                    end
+    %                 DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
+    %                 akt = akt +1;
+                end
+                Screen('Flip',ps.window,[],1);
+                % WaitSecs(0.5);
+                end
+            end
+        catch ME2
+            fprintf('test2');
+        end
     end
     r.buchstaben=ansbuchst;
     

@@ -6,7 +6,7 @@ function [est] = ERP_train( p, ps, trialstruct, tex )
 
 levels = linspace(p.dot_lum_min, p.dot_lum_max, p.dot_lum_steps);  %create a vector with all possible color changes, e.g. -.1 -.15 -.2 -.25 -.3 
 all_levels = [];
-t_response(1)= struct('condition',nan,'hit',0,'RT',0,'error',0,'errorRT',0,'miss',0,'FA',0,'FART',0,'dFA',0,'dFART',0);
+t_response(1)= struct('condition',nan,'hit',0,'RT',0,'error',0,'errorRT',0,'miss',0,'FA',0,'FART',0,'dFA',0,'dFART',0,'buchstaben',nan);
 
 do_train = 1;
 train_run = 0;
@@ -15,7 +15,65 @@ while do_train
     train_run = train_run + 1;
     
     %define new trial & luminance randomization for every training run
-    t_trialstruct = trialstruct(randsample(length(trialstruct),p.train_trials)); %choose a random sample of trials                               
+    
+    searchmatrix = [];
+    searchmatrix(1).condition="";
+    searchmatrix(1).target_pos=0;
+    searchmatrix(1).distr_pos=0;
+    searchmatrix(1).dot_target_pos=0;
+    searchmatrix(1).dot_distr_pos=0;
+    searchmatrix(1).jitter=0;
+    searchmatrix(1).perm = randperm(4);
+    s = 1;
+    
+    probematrix = [];
+    probematrix(1).condition="";
+    probematrix(1).target_pos=0;
+    probematrix(1).distr_pos=0;
+    probematrix(1).dot_target_pos=0;
+    probematrix(1).dot_distr_pos=0;
+    probematrix(1).jitter=0;
+    probematrix(1).perm = randperm(4);
+    pr = 1;
+    
+    for i = 1:length(trialstruct)
+        if (trialstruct(i).condition(1) == 's')
+            searchmatrix(s) = trialstruct(i);
+            s = s+1;
+        else
+            probematrix(pr) = trialstruct(i);
+            pr = pr+1;
+        end    
+    end    
+    
+    % Search oder Probe?
+    
+    key_check = 0;
+    traincon = 'b';
+%     fprintf('Search oder Beides? s/b');
+%     while key_check == 0
+%         [keyIsDown, ~, keyCode] = KbCheck;
+%         if keyIsDown && keyCode(KbName('s'))
+%             key_check = 1;
+%             traincon = 's';
+%             WaitSecs(0.3);
+%         end
+%         if keyIsDown && keyCode(KbName('b'))
+%             key_check = 1;
+%             traincon = 'b';
+%             WaitSecs(0.3);
+%         end
+%     end
+    
+   
+    traintrialstruct = ERP_trialstruct(p);
+    
+    %t_trialstruct = trialstruct(randsample(length(trialstruct),p.train_trials)); %choose a random sample of trials 
+    if traincon == 's'
+        t_trialstruct = searchmatrix(randsample(length(searchmatrix),p.train_trials));
+    else
+        t_trialstruct = traintrialstruct(randsample(length(traintrialstruct),p.train_trials));
+    end
     levels_arr = repmat(levels,1,ceil(p.train_trials/length(levels)));           %repeat the values 
     levels_arr = Shuffle(levels_arr(1:p.train_trials));                          %shuffle and cut them to trial number
     all_levels = [all_levels levels_arr];                                        %attatch luminance vector for every train run
@@ -59,12 +117,18 @@ while do_train
     DrawFormattedText(ps.window, sprintf('Fehlerrate:  %1.0f %%',t_behavior.errorrate*100),'center', 650, p.fix_col);
     DrawFormattedText(ps.window, sprintf('Rate Falscher Alarme:  %1.0f %%',t_behavior.FArate*100),'center', 700, p.fix_col);             
     DrawFormattedText(ps.window, sprintf('Reaktionszeit:  %1.0f ms',t_behavior.meanRT*1000),'center', 750, p.fix_col);
+    if traincon == 'b'
+       DrawFormattedText(ps.window, sprintf('Richtige Buchstaben:  %1.0f %%',t_behavior.richtige*100),'center', 750, p.fix_col); 
+    end    
 
     fprintf(1,'\n###\nRichtige Reaktionen:  %1.0f %%',t_behavior.hitrate*100)
     fprintf(1,'\nFehlerrate:  %1.0f %%',t_behavior.errorrate*100)
     fprintf(1,'\nRate Falscher Alarme:  %1.0f %%',t_behavior.FArate*100)
     fprintf(1,'\nReaktionszeit:  %1.0f ms\n###\n',t_behavior.meanRT*1000)
     Screen('Flip', ps.window, 0);
+    if traincon == 'b'
+       fprintf(1,'\nRichtige Buchstaben:  %1.0f %%\n###\n',t_behavior.richtige*100) 
+    end
     
     %Parameter estimation (cumulative over runs)
     est = ERP_eval_train(t_response,all_levels, levels,p.thresh);
