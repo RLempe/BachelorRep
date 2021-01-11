@@ -552,6 +552,7 @@ else %probe trial condition, hier die buchstabenabfrage machen
     
     unfertig = true;
     ansbuchst={'','','',''};
+%<<<<<<< HEAD
     abstand = 400;
     akt=1;
     n=0;
@@ -563,14 +564,14 @@ else %probe trial condition, hier die buchstabenabfrage machen
         Screen('Flip',ps.window,[],1);
         gedrueckt = false;
         while ~gedrueckt
-            try
+%             try
                 [keyIsDown, secs, keyCode] = KbCheck;
                 if keyIsDown 
                     gedrueckt = true;
                 end
-            catch ME 
-                fprintf('test1');
-            end    
+%             catch ME 
+%                 fprintf('test1');
+%             end    
         end
         try
             if keyCode(KbName('Return'))
@@ -592,7 +593,22 @@ else %probe trial condition, hier die buchstabenabfrage machen
                     end
                     Screen('Flip',ps.window,[],1);
                     WaitSecs(0.5);
+%                    if (keyCode(KbName('DELETE')) && (akt > 1))
+                ansbuchst{akt}='';
+                akt = akt-1;
+                Screen('Flip',ps.window,secs);
                 else
+                if akt <5
+                    dieser = KbName(keyCode);
+                    if ~isempty(dieser)
+                        ansbuchst{akt} = dieser;
+                    end
+                    DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
+                    Screen('Flip', ps.window, secs+0.5);
+                    akt = akt +1;
+%>>>>>>> 07cc45f098b8dd42a5b553095f93fadb76bd66f1
+                else
+                    
                 if akt <5 %keine doppelten Buchstaben!
                     dieser = KbName(keyCode);
     %                 DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
@@ -601,7 +617,8 @@ else %probe trial condition, hier die buchstabenabfrage machen
                         if ansbuchst{i} == upper(dieser)
                             doppelt = true;
                         end    
-                    end    
+                    end 
+                    
                     if (~isempty(dieser) && ~doppelt)
                         ansbuchst{akt} = upper(dieser);
                         DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
@@ -609,18 +626,85 @@ else %probe trial condition, hier die buchstabenabfrage machen
                         Screen('Flip',ps.window,[],1);
                         WaitSecs(0.5);
                     end
+                    
     %                 DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
     %                 akt = akt +1;
                 end
+                
                 Screen('Flip',ps.window,[],1);
                 % WaitSecs(0.5);
                 end
             end
+        end
         catch ME2
             fprintf('test2');
         end
     end
     r.buchstaben=ansbuchst;
+%=======
+%     ansbuchst(2)='';
+%     ansbuchst(3)='';
+%     ansbuchst(4)='';
+%     abstand = 100;
+%     akt=1;
+%     n=0;
+%     while unfertig == true
+%         n=n+1;
+%         DrawFormattedText(ps.window, sprintf('An welche Buchstaben erinnern Sie sich?'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter, ps.yCenter-20-300, ps.xCenter, ps.yCenter-20+300]);
+%         [keyIsDown, secs, keyCode] = KbCheck;
+%         %taste = find(keyCode);
+%         if keyCode(KbName('Return'))
+%             Screen('Flip', ps.window, secs);
+%             unfertig = false;
+%         else
+%             for i = 1:akt-1
+%                 DrawFormattedText(ps.window, sprintf(ansbuchst{i}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter+textgroesse/2]);
+%             end
+            
+            
+%             if (keyCode(KbName('DELETE')) && (akt > 1))
+%                 ansbuchst{akt}='';
+%                 akt = akt-1;
+%                 Screen('Flip',ps.window,secs);
+%             else
+%                 if akt <5
+%                     dieser = KbName(keyCode);
+%                     if ~isempty(dieser)
+%                         ansbuchst{akt} = dieser;
+%                     end
+%                     DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
+%                     Screen('Flip', ps.window, secs+0.5);
+%                     akt = akt +1;
+% %>>>>>>> 07cc45f098b8dd42a5b553095f93fadb76bd66f1
+%                 else
+%                 if akt <5 %keine doppelten Buchstaben!
+%                     dieser = KbName(keyCode);
+%     %                 DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
+%                     doppelt = false;
+%                     for i = 1:akt
+%                         if ansbuchst{i} == upper(dieser)
+%                             doppelt = true;
+%                         end    
+%                     end    
+%                     if (~isempty(dieser) && ~doppelt)
+%                         ansbuchst{akt} = upper(dieser);
+%                         DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
+%                         akt = akt +1;
+%                         Screen('Flip',ps.window,[],1);
+%                         WaitSecs(0.5);
+%                     end
+%     %                 DrawFormattedText(ps.window, sprintf(ansbuchst{akt}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*akt-2.5*abstand), ps.yCenter+textgroesse/2]);
+%     %                 akt = akt +1;
+%                 end
+%                 Screen('Flip',ps.window,[],1);
+%                 % WaitSecs(0.5);
+%                 end
+%             end
+%         catch ME2
+%             fprintf('test2');
+%         end
+%     end
+%     r.buchstaben=ansbuchst;
     
     
 end    
