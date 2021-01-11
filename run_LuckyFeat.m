@@ -38,7 +38,7 @@ function run_LuckyFeat(sub,train,isolum,start_block)
 
 %% Parameter zur Testung ohne Funktionseingabe
 sub = 98;
-train = 1;
+train = 0;
 isolum = 0;
 start_block =1;
 
@@ -125,9 +125,9 @@ p.post_fix_min      = 1.2;  % equals response window
 %p.stim_duration     = .100;
 
 
-p.probe_buchstabendauer = 1;
-p.probe_hashtagdauer = 1;
-p.stim_duration     = 1; 
+p.probe_buchstabendauer = 0.1;
+p.probe_hashtagdauer = 0.5;
+p.stim_duration     = 0.2;  
 p.ITI               = .550; 
 % total trial duration is 500 + 100 + 1200 + 550 = 2.35 sec + jitter! [2.35-3.35 sec]
 
