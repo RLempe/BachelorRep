@@ -27,6 +27,14 @@ r.FART = nan;
 r.dFA = nan;
 r.dFART = nan;
 r.buchstaben = nan;
+r.perm = trialstruct.perm;
+r.target_pos = trialstruct.target_pos;
+r.distr_pos = trialstruct.distr_pos;
+
+%richtige buchstaben mit übergeben
+
+
+
 % timing structure (base all timing on trial start, to prevent cumulation of delay)
 
 %hier arbeiten: timings festlegen (am besten in run_luckyfeat)
@@ -483,6 +491,7 @@ end
 Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col); %add fixation cross
 
 if trialstruct.condition(1) == 's'
+    RestrictKeysForKbCheck([]);
     t.time2=Screen('Flip', ps.window, t.time1+pre_fix_end);
 %     lptwrite(1,trigger,500);
 
@@ -550,7 +559,7 @@ else %probe trial condition, hier die buchstabenabfrage machen
     r.dFA = nan;
     r.dFART = nan;
     
-    unfertig = true;
+    unfertig = true;     
     ansbuchst={'','','',''};
     abstand = 400;
     akt=1;
@@ -572,6 +581,8 @@ else %probe trial condition, hier die buchstabenabfrage machen
             if keyCode(KbName('Return'))
                 Screen('Flip', ps.window);
                 unfertig = false;
+                % 1,5 Sekunden warten? Mit Norman besprechen!!
+                WaitSecs(1);
             else
                 for i = 1:(akt-1)
                     DrawFormattedText(ps.window, sprintf(ansbuchst{i}), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter-textgroesse/2, ps.xCenter+(abstand*i-2.5*abstand), ps.yCenter+textgroesse/2]);
@@ -614,13 +625,19 @@ else %probe trial condition, hier die buchstabenabfrage machen
             fprintf('test2');
         end
     end
-    r.buchstaben=ansbuchst;
+    antwort = '';
+    for i = 1 : akt-1
+        antwort(i) = ansbuchst{i};
+    end
+    r.buchstaben=antwort;
 
     
     
 end    
     
 
+
+%doch mit time4 arbeiten???
 
 
 %WaitSecs('UntilTime',t.time4+p.ITI); %cumulative timing

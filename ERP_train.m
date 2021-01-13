@@ -6,7 +6,7 @@ function [est] = ERP_train( p, ps, trialstruct, tex )
 
 levels = linspace(p.dot_lum_min, p.dot_lum_max, p.dot_lum_steps);  %create a vector with all possible color changes, e.g. -.1 -.15 -.2 -.25 -.3 
 all_levels = [];
-t_response(1)= struct('condition',nan,'hit',0,'RT',0,'error',0,'errorRT',0,'miss',0,'FA',0,'FART',0,'dFA',0,'dFART',0,'buchstaben',nan);
+t_response(1)= struct('condition',nan,'hit',0,'RT',0,'error',0,'errorRT',0,'miss',0,'FA',0,'FART',0,'dFA',0,'dFART',0,'buchstaben',nan,'perm',nan,'target_pos',nan,'distr_pos',nan);
 
 do_train = 1;
 train_run = 0;
@@ -118,7 +118,7 @@ while do_train
     DrawFormattedText(ps.window, sprintf('Rate Falscher Alarme:  %1.0f %%',t_behavior.FArate*100),'center', 700, p.fix_col);             
     DrawFormattedText(ps.window, sprintf('Reaktionszeit:  %1.0f ms',t_behavior.meanRT*1000),'center', 750, p.fix_col);
     if traincon == 'b'
-       DrawFormattedText(ps.window, sprintf('Richtige Buchstaben:  %1.0f %%',t_behavior.richtige*100),'center', 750, p.fix_col); 
+       DrawFormattedText(ps.window, sprintf('Richtige Buchstaben:  %1.0f %%',t_behavior.richtige*100),'center', 800, p.fix_col); 
     end    
 
     fprintf(1,'\n###\nRichtige Reaktionen:  %1.0f %%',t_behavior.hitrate*100)
@@ -127,7 +127,11 @@ while do_train
     fprintf(1,'\nReaktionszeit:  %1.0f ms\n###\n',t_behavior.meanRT*1000)
     Screen('Flip', ps.window, 0);
     if traincon == 'b'
-       fprintf(1,'\nRichtige Buchstaben:  %1.0f %%\n###\n',t_behavior.richtige*100) 
+       fprintf(1,'\nRichtige Buchstaben:  %1.0f %%\n###\n',t_behavior.richtige*100)
+       fprintf(1,'\nRichtige Targets:  %1.0f %%\n###\n',t_behavior.targetsrichtig*100)
+       fprintf(1,'\nRichtige Singletons:  %1.0f %%\n###\n',t_behavior.singletonsrichtig*100)
+       fprintf(1,'\nRichtige Filler:  %1.0f %%\n###\n',t_behavior.nonsingrichtig*100)
+       
     end
     
     %Parameter estimation (cumulative over runs)

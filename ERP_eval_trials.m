@@ -22,44 +22,42 @@ function [b] = ERP_eval_trials( trials, response )
     nonsingrichtig = 0;
     
     
-    %checken, ob es überhaupt probe ist //
-    %dritte probe trials, falls vorhanden, rausschmeißen
-    
     
     for i = 1:length(trials)
-        
-        if trials(i).condition(1) == 'p'
+        if response(i).condition(1) == 'p'
             aussortieren = false;
-                if i >2 
+                if i > 2 
                 aussortieren = false;
-                    if trials(i).condition(1) == 'p' && trials(i-1).condition(1) == 'p' && trials(i-2).condition(1) == 'p'
+                    if response(i).condition(1) == 'p' && response(i-1).condition(1) == 'p' && response(i-2).condition(1) == 'p'
                         aussortieren = true;
                     end    
                 end
                 if aussortieren == false
-                    respbuchst = response(trials(i)).buchstaben;      
-                    loesperm = trials(i).perm;
+                    respbuchst = response(i).buchstaben;      
+                    loesperm = response(i).perm;
                     loesbuchst = '';        
                     for j = 1:4
                         loesbuchst(j)=alphabet(loesperm(j));
-                        if j == trials(i).target_pos
-                            antwort = length(intersect(loesperm(j), respbuchst));
+                        if j == response(i).target_pos 
+                            antwort = length(intersect(loesbuchst(j), respbuchst));
                             targets = targets + 1;
                             targetsrichtig = targetsrichtig + antwort;
                         else
-                            if j == trials(i).distr_pos
-                                antwort = length(intersect(loesperm(j), respbuchst));
+                            if j == response(i).distr_pos
+                                antwort = length(intersect(loesbuchst(j), respbuchst));
                                 singletons = singletons + 1;
                                 singletonsrichtig = singletonsrichtig + antwort;
                             else % dann Non-Singleton
-                                antwort = length(intersect(loesperm(j), respbuchst));
+                                antwort = length(intersect(loesbuchst(j), respbuchst));
                                 nonsing = nonsing + 1;
                                 nonsingrichtig = nonsingrichtig + antwort;
                             end    
                         end 
-                    richtige_overall = intersect(loesbuchst, respbuchst);
-                    gesamt = gesamt + richtige_overall;                
-                    end 
+%                     richtige_overall = length(intersect(loesbuchst, respbuchst));
+%                     gesamt = gesamt + richtige_overall;                
+                    end
+                    richtige_overall = length(intersect(loesbuchst, respbuchst));
+                    gesamt = gesamt + richtige_overall;
                 end
             
         

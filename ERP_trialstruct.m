@@ -164,9 +164,10 @@ for c = 1:6
         trialstruct(idx).dot_target_pos = randi(2);
         trialstruct(idx).dot_distr_pos = randi(2);
         trialstruct(idx).jitter = p.jitter(randi(length(p.jitter)));
-        perm=randperm(26);
-        perm2=perm(1:4);
-        trialstruct(idx).perm=perm2;
+%         perm=randperm(26);
+%         perm2=perm(1:4);
+%         trialstruct(idx).perm=perm2;
+        trialstruct(idx).perm = [];
     end
 end
 

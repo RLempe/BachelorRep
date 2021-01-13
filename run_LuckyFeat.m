@@ -38,7 +38,7 @@ function run_LuckyFeat(sub,train,isolum,start_block)
 
 %% Parameter zur Testung ohne Funktionseingabe
 sub = 98;
-train = 0;
+train = 1;
 isolum = 0;
 start_block =1;
 
@@ -48,7 +48,7 @@ start_block =1;
 Screen('Preference', 'SkipSyncTests', 1);
 
 Testing = 0;
-p.scr_screen = 1;
+p.scr_screen = 2;
 %p.scr_refrate = 120;
 p.scr_refrate = 60;
 %p.scr_res = [1920 1080];
@@ -71,7 +71,8 @@ p.trials_per_search = 108;
 p.trials_total = p.trials_per_probe*(1/2)*length(p.conditions) + p.trials_per_search*(1/2)*length(p.conditions);
 p.n_blocks = 24; %willkürlich festgelegt
 p.trials_per_block = p.trials_total/p.n_blocks;
-p.train_trials = 48; %nach Gaspelin et al.
+%p.train_trials = 48; %nach Gaspelin et al.
+p.train_trials = 8; %zum Testen
 
 % Stimulus definition
 p.stim_start_cols   = [0 1 0; 1 .4 0];
@@ -421,7 +422,7 @@ for t = start_trial:p.trials_total
         DrawFormattedText(ps.window, sprintf('Rate Falscher Alarme:  %1.0f %%',behavior(block_nr).FArate*100),'center', 700, p.fix_col);             
         DrawFormattedText(ps.window, sprintf('Reaktionszeit:  %1.0f ms',behavior(block_nr).meanRT*1000),'center', 750, p.fix_col);
         
-        DrawFormattedText(ps.window, sprintf('Richtige Buchstaben:  %1.0f %%',t_behavior.richtige*100),'center', 750, p.fix_col);
+        DrawFormattedText(ps.window, sprintf('Richtige Buchstaben:  %1.0f %%',t_behavior.richtige*100),'center', 800, p.fix_col);
 
         fprintf(1,'\n###\nRichtige Reaktionen:  %1.0f %%',behavior(block_nr).hitrate*100)
         fprintf(1,'\nFehlerrate:  %1.0f %%',behavior(block_nr).errorrate*100)
@@ -429,6 +430,9 @@ for t = start_trial:p.trials_total
         fprintf(1,'\nReaktionszeit:  %1.0f ms\n###\n',behavior(block_nr).meanRT*1000)
         
         fprintf(1,'\nRichtige Buchstaben:  %1.0f %%\n###\n',t_behavior.richtige*100)
+        fprintf(1,'\nRichtige Targets:  %1.0f %%\n###\n',t_behavior.targetsrichtig*100)
+        fprintf(1,'\nRichtige Singletons:  %1.0f %%\n###\n',t_behavior.singletonsrichtig*100)
+        fprintf(1,'\nRichtige Filler:  %1.0f %%\n###\n',t_behavior.nonsingrichtig*100)
         
         Screen('Flip', ps.window, 0);
         
