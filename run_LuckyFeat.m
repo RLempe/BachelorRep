@@ -125,11 +125,20 @@ p.pre_fix_min       = .500; % jitter added
 p.post_fix_min      = 1.2;  % equals response window
 %p.stim_duration     = .100;
 
-
+%Parameter für das Experiment
 p.probe_buchstabendauer = 0.1;
 p.probe_hashtagdauer = 0.5;
 p.stim_duration     = 0.2;  
 p.ITI               = .550; 
+
+%zum Testen:
+% p.probe_buchstabendauer = 2;
+% p.probe_hashtagdauer = 2;
+% p.stim_duration     = 2;  
+% p.ITI               = .550; 
+
+
+
 % total trial duration is 500 + 100 + 1200 + 550 = 2.35 sec + jitter! [2.35-3.35 sec]
 
 % Logpath

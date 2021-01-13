@@ -49,21 +49,21 @@ while do_train
     % Search oder Probe?
     
     key_check = 0;
-    traincon = 'b';
-%     fprintf('Search oder Beides? s/b');
-%     while key_check == 0
-%         [keyIsDown, ~, keyCode] = KbCheck;
-%         if keyIsDown && keyCode(KbName('s'))
-%             key_check = 1;
-%             traincon = 's';
-%             WaitSecs(0.3);
-%         end
-%         if keyIsDown && keyCode(KbName('b'))
-%             key_check = 1;
-%             traincon = 'b';
-%             WaitSecs(0.3);
-%         end
-%     end
+%     traincon = 'b';
+    fprintf('Search oder Beides? s/b');
+    while key_check == 0
+        [keyIsDown, ~, keyCode] = KbCheck;
+        if keyIsDown && keyCode(KbName('s'))
+            key_check = 1;
+            traincon = 's';
+            WaitSecs(0.3);
+        end
+        if keyIsDown && keyCode(KbName('b'))
+            key_check = 1;
+            traincon = 'b';
+            WaitSecs(0.3);
+        end
+    end
     
    
     traintrialstruct = ERP_trialstruct(p);
