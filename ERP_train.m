@@ -128,9 +128,9 @@ while do_train
     Screen('Flip', ps.window, 0);
     if traincon == 'b'
        fprintf(1,'\nRichtige Buchstaben:  %1.0f %%\n###\n',t_behavior.richtige*100)
-       fprintf(1,'\nRichtige Targets:  %1.0f %%\n###\n',t_behavior.targetsrichtig*100)
-       fprintf(1,'\nRichtige Singletons:  %1.0f %%\n###\n',t_behavior.singletonsrichtig*100)
-       fprintf(1,'\nRichtige Filler:  %1.0f %%\n###\n',t_behavior.nonsingrichtig*100)
+%        fprintf(1,'\nRichtige Targets:  %1.0f %%\n###\n',t_behavior.targetsrichtig*100)
+%        fprintf(1,'\nRichtige Singletons:  %1.0f %%\n###\n',t_behavior.singletonsrichtig*100)
+%        fprintf(1,'\nRichtige Filler:  %1.0f %%\n###\n',t_behavior.nonsingrichtig*100)
        
     end
     
