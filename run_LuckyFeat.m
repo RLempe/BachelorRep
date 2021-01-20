@@ -156,7 +156,7 @@ p.ITI               = .550;
 % Logpath
 % p.logpath           = '/home/pc/matlab/user/maria/ERP/Logs/';
 % p.logpath = 'R:\MATLAB\BachelorRep\Logs\';
-p.logpath = '/home/pc/matlab/user/romy/LuckyFeat/BachelorRep\Logs\'; % for room 119
+p.logpath = '/home/pc/matlab/user/romy/LuckyFeat/BachelorRep/Logs/'; % for room 119
 % p.logpath = pwd;
 format shortg; starttime = clock;
 p.timestamp         = [num2str(starttime(1)),'-',num2str(starttime(2)),'-',num2str(starttime(3)),'_',num2str(starttime(4)),'-',num2str(starttime(5))];

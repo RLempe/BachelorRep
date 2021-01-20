@@ -564,7 +564,7 @@ else %probe trial condition, hier die buchstabenabfrage machen
     akt=1;
     n=0;
     restrictKeys = KbName({'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','backspace','Return'});
-    RestrictKeysForKbCheck(restrictKeys(restrictKeys~=105))
+    RestrictKeysForKbCheck(restrictKeys(restrictKeys~=105));
     return_button = 37;
 %     RestrictKeysForKbCheck(KbName({'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','backspace','Return'}));
 %     DrawFormattedText(ps.window, sprintf('An welche Buchstaben erinnern Sie sich?'), 'center', 'center', p.fix_col, [], [], [], [], [], [ps.xCenter, ps.yCenter-20-300, ps.xCenter, ps.yCenter-20+300]);
