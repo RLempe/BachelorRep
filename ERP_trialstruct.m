@@ -4,80 +4,86 @@ function [ trialstruct ] = ERP_trialstruct(p)
 
 trialstruct = [];
 %vert_pos = repmat([1 3],1,p.trials_per_cond/2);    %define vector for even distribution of vertical position (1 or 3)
-for c = 1:6
+for c = 1:4
     for t = 1:p.trials_per_probe
         idx = (c-1)*p.trials_per_probe+t;
         trialstruct(idx).condition=p.conditions{c}; %first write conditions
-        switch trialstruct(idx).condition           %define target and distractor positions  
-             case 'p2'
-                trialstruct(idx).target_pos = randi(4);
-                trialstruct(idx).distr_pos = 0;
-             case 's2'
-                trialstruct(idx).target_pos = randi(4);
-                trialstruct(idx).distr_pos = 0;
-             case 'p3'
-                trialstruct(idx).target_pos = randi(4);
-                trialstruct(idx).distr_pos = 0;
-             case 's3'
-                trialstruct(idx).target_pos = randi(4);
-                trialstruct(idx).distr_pos = 0;
-             case 'p1'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 's1'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 'p4'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 's4'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 'p5'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 's5'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 'p6'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 's6'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-        end
+%         switch trialstruct(idx).condition           %define target and distractor positions  
+%              case 'p2'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 trialstruct(idx).distr_pos = 0;
+%              case 's2'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 trialstruct(idx).distr_pos = 0;
+%              case 'p3'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 trialstruct(idx).distr_pos = 0;
+%              case 's3'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 trialstruct(idx).distr_pos = 0;
+%              case 'p1'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 's1'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 'p4'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 's4'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 'p5'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 's5'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 'p6'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 's6'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%         end
+        trialstruct(idx).target_pos = randi(4);
+        r = randperm(3)+1;
+        numberToRemove = trialstruct(idx).target_pos;
+        r(r==numberToRemove) = [];
+        r=r(1);
+        trialstruct(idx).distr_pos = r;
         trialstruct(idx).dot_target_pos = randi(2);
         trialstruct(idx).dot_distr_pos = randi(2);
         trialstruct(idx).jitter = p.jitter(randi(length(p.jitter)));
@@ -87,80 +93,86 @@ for c = 1:6
     end
 end
 
-for c = 1:6
+for c = 1:4
     for t = 1:p.trials_per_search
-        idx = (6*p.trials_per_probe)+(c-1)*p.trials_per_search+t;
-        trialstruct(idx).condition=p.conditions{c+6}; %first write conditions
-        switch trialstruct(idx).condition           %define target and distractor positions  
-             case 'p2'
-                trialstruct(idx).target_pos = randi(4);
-                trialstruct(idx).distr_pos = 0;
-             case 's2'
-                trialstruct(idx).target_pos = randi(4);
-                trialstruct(idx).distr_pos = 0;
-             case 'p3'
-                trialstruct(idx).target_pos = randi(4);
-                trialstruct(idx).distr_pos = 0;
-             case 's3'
-                trialstruct(idx).target_pos = randi(4);
-                trialstruct(idx).distr_pos = 0;
-             case 'p1'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 's1'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 'p4'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 's4'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 'p5'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 's5'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 'p6'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-            case 's6'
-                trialstruct(idx).target_pos = randi(4);
-                r = randperm(3)+1;
-                numberToRemove = trialstruct(idx).target_pos;
-                r(r==numberToRemove) = [];
-                r=r(1);
-                trialstruct(idx).distr_pos = r;
-        end
+        idx = (4*p.trials_per_probe)+(c-1)*p.trials_per_search+t;
+        trialstruct(idx).condition=p.conditions{c+4}; %first write conditions
+%         switch trialstruct(idx).condition           %define target and distractor positions  
+%              case 'p2'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 trialstruct(idx).distr_pos = 0;
+%              case 's2'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 trialstruct(idx).distr_pos = 0;
+%              case 'p3'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 trialstruct(idx).distr_pos = 0;
+%              case 's3'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 trialstruct(idx).distr_pos = 0;
+%              case 'p1'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 's1'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 'p4'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 's4'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 'p5'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 's5'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 'p6'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%             case 's6'
+%                 trialstruct(idx).target_pos = randi(4);
+%                 r = randperm(3)+1;
+%                 numberToRemove = trialstruct(idx).target_pos;
+%                 r(r==numberToRemove) = [];
+%                 r=r(1);
+%                 trialstruct(idx).distr_pos = r;
+%         end
+        trialstruct(idx).target_pos = randi(4);
+        r = randperm(3)+1;
+        numberToRemove = trialstruct(idx).target_pos;
+        r(r==numberToRemove) = [];
+        r=r(1);
+        trialstruct(idx).distr_pos = r;
         trialstruct(idx).dot_target_pos = randi(2);
         trialstruct(idx).dot_distr_pos = randi(2);
         trialstruct(idx).jitter = p.jitter(randi(length(p.jitter)));
@@ -173,24 +185,16 @@ end
 
 %trialstruct=trialstruct(randperm(numel(trialstruct)));
 
-probematrix = trialstruct(1:(6*p.trials_per_probe));
+probematrix = trialstruct(1:(4*p.trials_per_probe));
 proberand = probematrix(randperm(numel(probematrix)));
-searchmatrix = trialstruct((6*p.trials_per_probe)+1:p.trials_total);
+searchmatrix = trialstruct((4*p.trials_per_probe)+1:p.trials_total);
 searchrand = searchmatrix(randperm(numel(searchmatrix)));
 nprobe= 1;
-maxprobe = 6*p.trials_per_probe;
-maxsearch = 6*p.trials_per_search;
+maxprobe = 4*p.trials_per_probe;
+maxsearch = 4*p.trials_per_search;
 nsearch = 1; 
 %trialstruct_neu = trialstruct;
 trialstruct_neu(1:p.trials_total)=struct('condition',nan,'target_pos',0,'distr_pos',0,'dot_target_pos',0,'dot_distr_pos',0,'jitter',0,'perm',[]);
-% trialstruct_neu = [];
-% trialstruct_neu(1).condition="";
-% trialstruct_neu(1).target_pos=0;
-% trialstruct_neu(1).distr_pos=0;
-% trialstruct_neu(1).dot_target_pos=0;
-% trialstruct_neu(1).dot_distr_pos=0;
-% trialstruct_neu(1).jitter=0;
-% trialstruct_neu(1).perm = randperm(4);
 
 for i = 1:p.trials_total
     dieseauswahl=[];

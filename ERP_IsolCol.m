@@ -30,29 +30,36 @@ else
 end
 
 PsychDefaultSetup(2);
-Datapixx('Open');
-Datapixx('SetPropixxDlpSequenceProgram', 0);
-Datapixx('RegWrRd');
+% Datapixx('Open');
+% Datapixx('SetPropixxDlpSequenceProgram', 0);
+% Datapixx('RegWrRd');
 
-% get settings of screen
-p.screen_num = max(Screen('Screens'));
-p.screen = Screen('ConfigureDisplay', 'Scanout',p.screen_num, 0);
+% % get settings of screen
+% p.screen_num = max(Screen('Screens'));
+% p.screen = Screen('ConfigureDisplay', 'Scanout',p.screen_num, 0);
+% 
+% % check for violations
+% if any([p.screen.width~=1920, p.screen.height~=1080, p.screen.hz~=120])
+%     % set to 1920 * 1080 at 120 Hz
+%     try Screen('ConfigureDisplay', 'Scanout',p.screen_num, 0, 1920,1080,120);
+%         disp('...adjusting settings to 1920 X 1080 with 120 Hz...may take some while...')
+%         WaitSecs(10)
+%     catch
+%         fprintf(['!!!!\n...not able to adjust settings to 1920 X 1080 with 120 Hz!' ...
+%             '\ncurrent settings: %1.0f X %1.0f with %1.0f Hz\n!!!!\n'],...
+%             p.screen.width, p.screen.height, p.screen.hz)
+%     end
+%         
+% else
+%     disp('...settings are fine: 1920 X 1080 with 120 Hz')
+% end
 
-% check for violations
-if any([p.screen.width~=1920, p.screen.height~=1080, p.screen.hz~=120])
-    % set to 1920 * 1080 at 120 Hz
-    try Screen('ConfigureDisplay', 'Scanout',p.screen_num, 0, 1920,1080,120);
-        disp('...adjusting settings to 1920 X 1080 with 120 Hz...may take some while...')
-        WaitSecs(10)
-    catch
-        fprintf(['!!!!\n...not able to adjust settings to 1920 X 1080 with 120 Hz!' ...
-            '\ncurrent settings: %1.0f X %1.0f with %1.0f Hz\n!!!!\n'],...
-            p.screen.width, p.screen.height, p.screen.hz)
-    end
-        
-else
-    disp('...settings are fine: 1920 X 1080 with 120 Hz')
-end
+%Fuer Romy Zuhause:
+p.screen_num = 2;
+p.screen.width = 1920;
+p.screen.height = 1080;
+p.screen.hz = 120;
+
 
 %Supress bright PTB screen
 Screen('Preference','VisualDebugLevel', 0);
