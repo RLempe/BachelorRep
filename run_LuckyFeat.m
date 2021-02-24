@@ -103,12 +103,6 @@ p.train_trials = 8; %zum Testen
 % p.stim_cols_labels  = {'gruen';'rot'};
 
 
-
-
-
-
-
-
 % Stimulus definition für LuckyFeat (neu)
 p.stim_start_cols   = [0 1 0; 1 .4 0; 0.2 0.4 1];
 %p.stim_start_cols   = [0 1 0; 1 .4 0];   % initial colors of stimului (later adjusted in Isolum-Script); later asigned to target and distractor; col1 is also BL color; !!script only works for mixed colors of max 2 rgb values!!
