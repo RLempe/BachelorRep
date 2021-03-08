@@ -37,10 +37,10 @@ function run_LuckyFeat(sub,train,isolum,start_block)
 % FIX!!! enable timestamp
 
 %% Parameter zur Testung ohne Funktionseingabe
-sub = 97;
-train = 0;
-isolum = 0;
-start_block =1;
+% sub = 97;
+% train = 0;
+% isolum = 0;
+% start_block =1;
 
 
 %% Parameters
@@ -50,17 +50,17 @@ Screen('Preference', 'SkipSyncTests', 1);
 Testing = 0;
 
 %Experiment
-% p.scr_screen = 1;
+p.scr_screen = 1;
 
 %bei Romy zuhause
-p.scr_screen = 2;
+% p.scr_screen = 2;
 
-%p.scr_refrate = 120;
-p.scr_refrate = 60;
+p.scr_refrate = 120;
+% p.scr_refrate = 60;
 %p.scr_res = [1920 1080];
 p.scr_res = [1920 1080];
-p.background_col = [0.05 0.05 0.05];
-p.isolum_background = [0.5 0.5 0.5];
+p.background_col = [0.05 0.05 0.05]; %
+p.isolum_background = [0.4 0.4 0.4]; % entspricht ca 18 cd/m² am VPiXX-EEG (Raum 119)
 %p.isolum_background = [0.1 0.1 0.1];
 
 % Design Parameters   
@@ -71,26 +71,26 @@ p.isolum_background = [0.5 0.5 0.5];
 p.conditions = {'p1a', 'p1b', 'p2a', 'p2b', 's1a', 's1b', 's2a', 's2b'};
 
 %Experiment
-% p.trials_per_probe = 72;
-% p.trials_per_search = 108;
+p.trials_per_probe = 72;
+p.trials_per_search = 108;
 
 %fürs Testen
-p.trials_per_probe = 1;
-p.trials_per_search = 2;
+% p.trials_per_probe = 1;
+% p.trials_per_search = 2;
 
 
 
 p.trials_total = p.trials_per_probe*(1/2)*length(p.conditions) + p.trials_per_search*(1/2)*length(p.conditions);
 
 %Experiment
-% p.n_blocks = 24; %willkürlich festgelegt 
+p.n_blocks = 18; %willkürlich festgelegt 
 
 %zum Testen
-p.n_blocks = 1; %willkürlich festgelegt
+% p.n_blocks = 1; %willkürlich festgelegt
 
 p.trials_per_block = p.trials_total/p.n_blocks;
 %p.train_trials = 48; %nach Gaspelin et al.
-p.train_trials = 8; %zum Testen
+p.train_trials = p.trials_per_block; %zum Testen
 
 % Stimulus definition für ERP (alt)
 % p.stim_start_cols   = [0 1 0; 1 .4 0];
@@ -104,19 +104,22 @@ p.train_trials = 8; %zum Testen
 
 
 % Stimulus definition für LuckyFeat (neu)
-p.stim_start_cols   = [0 1 0; 1 .4 0; 0.2 0.4 1];
+p.stim_start_cols   = [0 1 0; 1 0.4 0; 0 0.5 1];
 %p.stim_start_cols   = [0 1 0; 1 .4 0];   % initial colors of stimului (later adjusted in Isolum-Script); later asigned to target and distractor; col1 is also BL color; !!script only works for mixed colors of max 2 rgb values!!
 %p.isolum_defaults   = [0 0.34118 0; 0.50588 0 0.50588]; % green and pink isolum on .2 background
 %p.isolum_defaults   = [0 0.16471 0; 0.29412 0 0]; %green and red on .1 background
 % p.isolum_defaults   = [0.0000 0.1647 0.0000;0.1804 0.0722 0.0000; 0 0 0.3]; %alt
-p.isolum_defaults   = [0.0000 0.5882 0.0000;0.8196 0.3278 0.0000; 0.1882 0.3765 0.9421]; %Isoluminanz bei Romy zuhause
+% p.isolum_defaults   = [0.0000 0.5882 0.0000;0.8196 0.3278 0.0000; 0.1882 0.3765 0.9421]; %Isoluminanz bei Romy zuhause
+p.isolum_defaults = [0 0.5255 0; 0.6784 0.2714 0; 0 0.3980 0.7961]; %normans isodefaults
 %p.isolum_defaults   = [0 0.16471 0; 0.2 0.06 0]; %green and 1/.3 orange on .1 background
 %p.isolum_defaults   = [0 1 0; 1 .3 0];
-p.stim_cols_labels  = {'gruen';'rot'; 'blau'};
+p.stim_cols_labels  = {'grün';'rot'; 'blau'};
 
 
-
-
+% gemessene Farbwerte mit 18 cd/m² Hintergrund
+%        0    0.5255         0
+%    0.6784    0.2714         0
+%         0    0.3980    0.7961
 
 
 
@@ -126,8 +129,8 @@ p.stim_shapes       = {'Raute';'Quadrat';'Dreieck';'Schiefquadrat';'Kreis';'Sech
 % p.stim_shapes       = {'Quad_links';'Quad_rechts'};% Versuch, die beiden schiefen Quadrate zu programmieren
 
 
-p.dot_lum_max       = .05;%.05;       %maximal luminance change for training; also used for default
-p.dot_lum_min       = .01;     %minimum luminance change for training
+p.dot_lum_max       = .2;%.05;       %maximal luminance change for training; also used for default
+p.dot_lum_min       = .04;     %minimum luminance change for training
 p.dot_lum_steps     = 5;        %steps between min and max luminance for training
 p.dot_range         = 0.005;     %during the actual trial presentation, dot luminance will go one p.dot_range up and down; set to 0 of you dont want the range 
 p.thresh            = 0.85;      %performance threshold (percent correct) for training
@@ -139,11 +142,11 @@ p.fix_width         = 3;
 
 % Degree visual angle stuff
 p.distance          = 120;
-p.screen_cm         = [63.5 36];
-p.stim_size_dva     = 2.4; %pilot 2.2 %source 1.93
-p.stim_dist_dva     = 4.2; %pilot 3.1 %source 3.27
+p.screen_cm         = [53 29.9];
+p.stim_size_dva     = 1.2; %pilot 2.2 %source 1.93
+p.stim_dist_dva     = 2; %pilot 3.1 %source 3.27, Gaspelin 2017: 2°
 p.dot_dist_dva      = 0.4; %pilot 0.4 %source 0.73
-p.dot_size_dva      = 0.26; %pilot 0.26 %source 0.36
+p.dot_size_dva      = 0.2; %pilot 0.26 %source 0.36
 
 p.resp_key          = {'LeftArrow','RightArrow','Space'};
 p.trg_start         = 201;                         
@@ -169,9 +172,10 @@ p.post_fix_min      = 1.2;  % equals response window
 % p.ITI               = .550; 
 
 %zum Testen:
-p.probe_buchstabendauer = 1;
-p.probe_hashtagdauer = 0.5;
-p.stim_duration     = 2;  
+p.probe_buchstabendauer = .1;
+p.textsize = round(ERP_visualangle(0.8,p.distance,p.scr_res,p.screen_cm,1));
+p.probe_hashtagdauer = 0; % 0.5 Gaspelin 2017, 0 Gaspelin 2015
+p.stim_duration     = 0.2;  
 p.ITI               = .550; 
 
 
@@ -180,18 +184,18 @@ p.ITI               = .550;
 
 % Logpath
 % p.logpath           = '/home/pc/matlab/user/maria/ERP/Logs/';
-<<<<<<< HEAD
+% <<<<<<< HEAD
 % p.logpath = 'R:\MATLAB\BachelorRep\Logs\';
 p.logpath = '/home/pc/matlab/user/romy/LuckyFeat/BachelorRep/Logs/'; % for room 119
-=======
+% =======
 
 %bei Romy Zuhause
-p.logpath = 'R:\MATLAB\BachelorRep\Logs\';
+% p.logpath = 'R:\MATLAB\BachelorRep\Logs\';
 
 % p.logpath = '/home/pc/matlab/user/romy/LuckyFeat/BachelorRep\Logs\'; % for room 119
 
 
->>>>>>> sandboxstimuli
+% >>>>>>> sandboxstimuli
 % p.logpath = pwd;
 format shortg; starttime = clock;
 p.timestamp         = [num2str(starttime(1)),'-',num2str(starttime(2)),'-',num2str(starttime(3)),'_',num2str(starttime(4)),'-',num2str(starttime(5))];
@@ -389,8 +393,8 @@ tex.dot = CreateProceduralSmoothedDisc(ps.window, p.dot_size, p.dot_size, [], p.
 tex.fixbar = CreateProceduralSmoothedDisc(ps.window, p.fix_size, p.fix_size, [], p.fix_size ,1);
 
 %% Prepare Keyboard
-p.key_codes = [KbName(p.resp_key{1}) KbName(p.resp_key{2}) KbName(p.resp_key{3}) KbName('n') KbName('j')];
-RestrictKeysForKbCheck(p.key_codes);                                                  % allows input from all keys
+p.key_codes = [KbName(p.resp_key{1}) KbName(p.resp_key{2}) KbName(p.resp_key{3}) KbName('n') KbName('j') ];
+% RestrictKeysForKbCheck(p.key_codes);                                                  % allows input from all keys
 KbCheck;
 ListenChar(-1)     % block button presses to matlab window STRG + C to exit and ListenChar(0) to end
 Priority(1);       % set priority to real time
@@ -583,7 +587,7 @@ save(sprintf('%ssub%d_auswertung_%s.mat',p.logpath,sub,p.timestamp),'auswertung'
 %End Experiment
 save(sprintf('%ssub%d_parameters_%s.mat',p.logpath,sub,p.timestamp),'p');
 Screen('TextSize', ps.window, 30);
-DrawFormattedText(ps.window, 'Experiment beendet.\nVielen Dank fÃ¼r die Teilnahme!','center', 'center', p.fix_col);
+DrawFormattedText(ps.window, 'Experiment beendet.\nVielen Dank für die Teilnahme!','center', 'center', p.fix_col);
 Screen('Flip', ps.window, 0);
 WaitSecs(0.3);
 KbWait;
@@ -593,7 +597,7 @@ KbWait;
 % Datapixx('RegWrRd');
 % Datapixx('close');
 % ppdev_mex('Close', 1);
-% ListenChar(0);
+ListenChar(0);
 sca;
 
 end

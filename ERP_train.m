@@ -77,7 +77,7 @@ while do_train
     levels_arr = repmat(levels,1,ceil(p.train_trials/length(levels)));           %repeat the values 
     levels_arr = Shuffle(levels_arr(1:p.train_trials));                          %shuffle and cut them to trial number
     all_levels = [all_levels levels_arr];                                        %attatch luminance vector for every train run
-    t_behavior(1) = struct('hitrate',0,'errorrate',0,'FArate',0,'meanRT',0);
+    t_behavior(1) = struct('hitrate',0,'errorrate',0,'FArate',0,'meanRT',0, 'richtige',0);
     
     %Start Screen
     Screen('TextSize', ps.window, 40);
@@ -127,7 +127,7 @@ while do_train
     fprintf(1,'\nReaktionszeit:  %1.0f ms\n###\n',t_behavior.meanRT*1000)
     Screen('Flip', ps.window, 0);
     if traincon == 'b'
-       fprintf(1,'\nRichtige Buchstaben:  %1.0f %%\n###\n',t_behavior.richtige*100)
+       fprintf(1,'\nRichtige Buchstaben:  %1.0f \n###\n',t_behavior.richtige)
 %        fprintf(1,'\nRichtige Targets:  %1.0f %%\n###\n',t_behavior.targetsrichtig*100)
 %        fprintf(1,'\nRichtige Singletons:  %1.0f %%\n###\n',t_behavior.singletonsrichtig*100)
 %        fprintf(1,'\nRichtige Filler:  %1.0f %%\n###\n',t_behavior.nonsingrichtig*100)
