@@ -224,7 +224,7 @@ for i = 1:p.trials_total
                 else %dann nimm egal was
                     if nsearch <= maxsearch && nprobe <= maxprobe
 %                         trialstruct_neu(i)=dieseauswahl(1);
-                        if zf <= (maxprobe/(maxprobe+maxsearch))
+                        if zf <= (maxprobe/(maxprobe+maxsearch)) ||  (i>4 && trialstruct_neu(i-4).condition(1) == 's' && trialstruct_neu(i-3).condition(1) == 's' && trialstruct_neu(i-2).condition(1) == 's' && trialstruct_neu(i-1).condition(1) == 's')
                             trialstruct_neu(i)=dieseauswahl(1);
                             nprobe = nprobe + 1;
                         else
@@ -258,7 +258,34 @@ for i = 1:p.trials_total
         end
     end    
 end
-trialstruct = trialstruct_neu;
+
+counti = 0;
+
+for i = 1:12
+
+    if trialstruct_neu(p.trials_total-i+1).condition(1) == 's'
+
+        counti = counti + 1;
+
+    end
+
+end
+
+ 
+
+if counti <= 4 || counti > 8
+
+    p.randcount = p.randcount + 1;
+
+    rand('state',p.sub+100*p.randcount);
+
+    trialstruct = ERP_trialstruct(p);
+
+else
+
+    trialstruct = trialstruct_neu;
+
+end
 
 end
 

@@ -49,6 +49,9 @@ Screen('Preference', 'SkipSyncTests', 1);
 
 Testing = 0;
 
+p.sub = sub;
+p.randcount = 0;
+
 %Experiment
 p.scr_screen = 1;
 

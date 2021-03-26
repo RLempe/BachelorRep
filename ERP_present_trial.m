@@ -145,19 +145,26 @@ if trialstruct.condition(1) == 'p'
     DrawFormattedText(ps.window, alphabet(perm(3)), 'center', 'center', buchstabenfarbe, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter+p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter+p.stim_dist+textgroesse/2]);
     DrawFormattedText(ps.window, alphabet(perm(4)), 'center', 'center', buchstabenfarbe, [], [], [], [], [], [ps.xCenter-p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter-p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
     t.time3=Screen('Flip', ps.window, t.time1+stim_end);
-    %Fixationskreuz
-    Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
-    %Figuren
-    Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col);
-    Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), rotation, [], [], p.distr_col);
-    Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], baselinefarbe);
-    Screen('FillPoly',ps.window,baselinefarbe,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1);
-    %Rauten
-    DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', buchstabenfarbe, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter-p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter-p.stim_dist+textgroesse/2]);
-    DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', buchstabenfarbe, [], [], [], [], [], [ps.xCenter+p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter+p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
-    DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', buchstabenfarbe, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter+p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter+p.stim_dist+textgroesse/2]);
-    DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', buchstabenfarbe, [], [], [], [], [], [ps.xCenter-p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter-p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
-    t.time4=Screen('Flip', ps.window, t.time1+buchstabenend);
+    
+    %für Hashtags diesen Teil Einkommentieren
+%     %Fixationskreuz
+%     Screen('DrawTextures', ps.window, tex.fixbar, [], p.fix_rects, [], [], [], p.fix_col);
+%     %Figuren
+%     Screen('DrawTexture', ps.window, tex.target, [],  p.pos_rects(target_pos,:), p.target_rot, [], [], p.target_col);
+%     Screen('DrawTexture', ps.window, tex.distr, [],  p.pos_rects(distr_pos,:), rotation, [], [], p.distr_col);
+%     Screen('DrawTexture',ps.window, tex.kreis, [], p.circle_rects(blpos1,:), 0, [], [], baselinefarbe);
+%     Screen('FillPoly',ps.window,baselinefarbe,[(p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)+s) (p.positions(blpos2,1)+0.5*s) (p.positions(blpos2,1)-0.5*s) (p.positions(blpos2,1)-s);(p.positions(blpos2,2)+0.5*h) (p.positions(blpos2,2)+0.5*h) p.positions(blpos2,2) (p.positions(blpos2,2)-0.5*h) (p.positions(blpos2,2)-0.5*h) p.positions(blpos2,2)]',1);
+%     %Rauten
+%     DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', buchstabenfarbe, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter-p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter-p.stim_dist+textgroesse/2]);
+%     DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', buchstabenfarbe, [], [], [], [], [], [ps.xCenter+p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter+p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
+%     DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', buchstabenfarbe, [], [], [], [], [], [ps.xCenter-textgroesse/2, ps.yCenter+p.stim_dist-textgroesse/2, ps.xCenter+textgroesse/2, ps.yCenter+p.stim_dist+textgroesse/2]);
+%     DrawFormattedText(ps.window, sprintf('#'), 'center', 'center', buchstabenfarbe, [], [], [], [], [], [ps.xCenter-p.stim_dist-textgroesse/2, ps.yCenter-textgroesse/2, ps.xCenter-p.stim_dist+textgroesse/2, ps.yCenter+textgroesse/2]);
+%     t.time4=Screen('Flip', ps.window, t.time1+buchstabenend);
+
+    %Für Hashtags diese Zeile auskommentieren
+    t.time4='';
+    
+    
 end
 
 % %Conditions S1 und S4 stimmt so
@@ -651,7 +658,7 @@ else %probe trial condition, hier die buchstabenabfrage machen
     
     %Fuer 119: bitte unkommentieren
     restrictKeys = KbName({'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','backspace','Return'});
-    RestrictKeysForKbCheck(restrictKeys(restrictKeys~=105))
+    RestrictKeysForKbCheck(restrictKeys(restrictKeys~=105));
     return_button = 37;
     
     

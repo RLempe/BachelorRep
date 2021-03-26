@@ -55,10 +55,16 @@ PsychDefaultSetup(2);
 % end
 
 %Fuer Romy Zuhause:
-p.screen_num = 2;
-p.screen.width = 1920;
-p.screen.height = 1080;
+% p.screen_num = 2;
+% p.screen.width = 1920;
+% p.screen.height = 1080;
+% p.screen.hz = 120;
+
+%Raum 119
+p.screen_num = 1;
 p.screen.hz = 120;
+
+
 
 
 %Supress bright PTB screen

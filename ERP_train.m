@@ -72,7 +72,9 @@ while do_train
     if traincon == 's'
         t_trialstruct = searchmatrix(randsample(length(searchmatrix),p.train_trials));
     else
-        t_trialstruct = traintrialstruct(randsample(length(traintrialstruct),p.train_trials));
+        rand('state',99);
+        startindex = randi(length(traintrialstruct)-p.train_trials);
+        t_trialstruct = traintrialstruct(startindex:startindex+p.train_trials-1);
     end
     levels_arr = repmat(levels,1,ceil(p.train_trials/length(levels)));           %repeat the values 
     levels_arr = Shuffle(levels_arr(1:p.train_trials));                          %shuffle and cut them to trial number
@@ -118,7 +120,7 @@ while do_train
     DrawFormattedText(ps.window, sprintf('Rate Falscher Alarme:  %1.0f %%',t_behavior.FArate*100),'center', 700, p.fix_col);             
     DrawFormattedText(ps.window, sprintf('Reaktionszeit:  %1.0f ms',t_behavior.meanRT*1000),'center', 750, p.fix_col);
     if traincon == 'b'
-       DrawFormattedText(ps.window, sprintf('Richtige Buchstaben:  %1.0f %%',t_behavior.richtige*100),'center', 800, p.fix_col); 
+       DrawFormattedText(ps.window, sprintf('Richtige Buchstaben:  %1.0f ',t_behavior.richtige),'center', 800, p.fix_col); 
     end    
 
     fprintf(1,'\n###\nRichtige Reaktionen:  %1.0f %%',t_behavior.hitrate*100)

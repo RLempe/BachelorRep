@@ -53,10 +53,10 @@ plot_colorwheel([newCol_out; 54.964 11.757 -80.572],'ColorSpace','LAB',...
 
 % ##
 %color values:
-%Colors2plot: [53.045 -62.370 49.088]; CIE L*a*b: [53.045 -62.370 49.088]; color hue in °: [141.795]
-%Colors2plot: [49.104 40.814 55.708]; CIE L*a*b: [49.104 40.814 55.708]; color hue in °: [53.772]
-%Colors2plot: [50.344 1.273 -57.653]; CIE L*a*b: [50.344 1.273 -57.653]; color hue in °: [271.265]
-%Colors2plot: [54.964 11.757 -80.572]; CIE L*a*b: [54.964 11.757 -80.572]; color hue in °: [278.302]
+%Colors2plot: [53.045 -62.370 49.088]; CIE L*a*b: [53.045 -62.370 49.088];color hue in °: [141.795], green
+%Colors2plot: [49.104 40.814 55.708]; CIE L*a*b: [49.104 40.814 55.708];color hue in °: [53.772], orange
+%Colors2plot: [50.344 1.273 -57.653]; CIE L*a*b: [50.344 1.273 -57.653];color hue in °: [271.265], blue
+%Colors2plot: [54.964 11.757 -80.572]; CIE L*a*b: [54.964 11.757 -80.572];color hue in °: [278.302], iso-blue
 
 
 %##
@@ -73,3 +73,12 @@ RomysColors = AdjConditions(2:end,:);
 %        0    0.5255         0
 %    0.6784    0.2714         0
 %         0    0.3980    0.7961
+
+% do isoluminance adjustement with the yellow LAB: [53.045 -10.750 78.639]
+theyellow = lab2rgb([53.045 -10.750 78.639]); % 0.5401    0.5085   -0.1663
+[AdjConditions]=PRPX_IsolCol([Bckgrnd; 1 1 0],8,5,0,[540 540]); %  0.4588    0.4588  0
+[thetheyellow] = CMmeasureColors([0.4588    0.4588  0],'manual'); % 55.0715  -13.5546   53.7383
+plot_colorwheel([53.045 -62.370 49.088; 49.104 40.814 55.708; 53.045 -10.750 78.639; 55.0715  -13.5546   53.7383],...
+    'ColorSpace','LAB',...
+    'SavePath','/home/pc/matlab/user/romy/LuckyFeat/BachelorRep','LAB_L',54.964,...
+    'LumBackground',40,'disp_LAB_vals',true) % input is green, orange, calculated yellow, measured yellow
