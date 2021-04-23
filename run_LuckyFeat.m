@@ -37,8 +37,8 @@ function run_LuckyFeat(sub,train,isolum,start_block)
 % FIX!!! enable timestamp
 
 %% Parameter zur Testung ohne Funktionseingabe
-sub = 98;
-train = 1;
+sub = 97;
+train = 0;
 isolum = 0;
 start_block =1;
 
@@ -48,11 +48,17 @@ start_block =1;
 Screen('Preference', 'SkipSyncTests', 1);
 
 Testing = 0;
+
+%Experiment
+% p.scr_screen = 1;
+
+%bei Romy zuhause
 p.scr_screen = 2;
+
 %p.scr_refrate = 120;
 p.scr_refrate = 60;
 %p.scr_res = [1920 1080];
-p.scr_res = [2560 1440];
+p.scr_res = [1920 1080];
 p.background_col = [0.05 0.05 0.05];
 p.isolum_background = [0.5 0.5 0.5];
 %p.isolum_background = [0.1 0.1 0.1];
@@ -62,27 +68,58 @@ p.isolum_background = [0.5 0.5 0.5];
 %p.conditions        = {'TLrDV', 'TLlDV','TVDLr','TVDLl','TLrDN','TLlDN','TNDLr','TNDLl','BL'};
 
 %p.conditions = {'p1', 's1', 'p2', 's2', 'p3', 's3', 'p4', 's4', 'p5', 's5', 'p6', 's6'};
-p.conditions = {'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 's1', 's2', 's3', 's4', 's5', 's6'};
+p.conditions = {'p1a', 'p1b', 'p2a', 'p2b', 's1a', 's1b', 's2a', 's2b'};
 
-p.trials_per_probe = 72;
-p.trials_per_search = 108;
+%Experiment
+% p.trials_per_probe = 72;
+% p.trials_per_search = 108;
+
+%fürs Testen
+p.trials_per_probe = 1;
+p.trials_per_search = 2;
+
 
 
 p.trials_total = p.trials_per_probe*(1/2)*length(p.conditions) + p.trials_per_search*(1/2)*length(p.conditions);
-p.n_blocks = 24; %willkürlich festgelegt
+
+%Experiment
+% p.n_blocks = 24; %willkürlich festgelegt 
+
+%zum Testen
+p.n_blocks = 1; %willkürlich festgelegt
+
 p.trials_per_block = p.trials_total/p.n_blocks;
 %p.train_trials = 48; %nach Gaspelin et al.
 p.train_trials = 8; %zum Testen
 
-% Stimulus definition
-p.stim_start_cols   = [0 1 0; 1 .4 0];
+% Stimulus definition für ERP (alt)
+% p.stim_start_cols   = [0 1 0; 1 .4 0];
+% %p.stim_start_cols   = [0 1 0; 1 .4 0];   % initial colors of stimului (later adjusted in Isolum-Script); later asigned to target and distractor; col1 is also BL color; !!script only works for mixed colors of max 2 rgb values!!
+% %p.isolum_defaults   = [0 0.34118 0; 0.50588 0 0.50588]; % green and pink isolum on .2 background
+% %p.isolum_defaults   = [0 0.16471 0; 0.29412 0 0]; %green and red on .1 background
+% p.isolum_defaults   = [0.0000 0.1647 0.0000;0.1804 0.0722 0.0000]; %green and 1/.4 orange on .1 background
+% %p.isolum_defaults   = [0 0.16471 0; 0.2 0.06 0]; %green and 1/.3 orange on .1 background
+% %p.isolum_defaults   = [0 1 0; 1 .3 0];
+% p.stim_cols_labels  = {'gruen';'rot'};
+
+
+% Stimulus definition für LuckyFeat (neu)
+p.stim_start_cols   = [0 1 0; 1 .4 0; 0.2 0.4 1];
 %p.stim_start_cols   = [0 1 0; 1 .4 0];   % initial colors of stimului (later adjusted in Isolum-Script); later asigned to target and distractor; col1 is also BL color; !!script only works for mixed colors of max 2 rgb values!!
 %p.isolum_defaults   = [0 0.34118 0; 0.50588 0 0.50588]; % green and pink isolum on .2 background
 %p.isolum_defaults   = [0 0.16471 0; 0.29412 0 0]; %green and red on .1 background
-p.isolum_defaults   = [0.0000 0.1647 0.0000;0.1804 0.0722 0.0000]; %green and 1/.4 orange on .1 background
+% p.isolum_defaults   = [0.0000 0.1647 0.0000;0.1804 0.0722 0.0000; 0 0 0.3]; %alt
+p.isolum_defaults   = [0.0000 0.5882 0.0000;0.8196 0.3278 0.0000; 0.1882 0.3765 0.9421]; %Isoluminanz bei Romy zuhause
 %p.isolum_defaults   = [0 0.16471 0; 0.2 0.06 0]; %green and 1/.3 orange on .1 background
 %p.isolum_defaults   = [0 1 0; 1 .3 0];
-p.stim_cols_labels  = {'gruen';'rot'};
+p.stim_cols_labels  = {'gruen';'rot'; 'blau'};
+
+
+
+
+
+
+
 
 
 p.stim_shapes       = {'Raute';'Quadrat';'Dreieck';'Schiefquadrat';'Kreis';'Sechseck'};% shape  of stimuli; later asigned to target and distractor (col1 goes with shape1);
@@ -125,17 +162,32 @@ p.pre_fix_min       = .500; % jitter added
 p.post_fix_min      = 1.2;  % equals response window
 %p.stim_duration     = .100;
 
+%Parameter für das Experiment
+% p.probe_buchstabendauer = 0.1;
+% p.probe_hashtagdauer = 0.5;
+% p.stim_duration     = 0.2;  
+% p.ITI               = .550; 
 
-p.probe_buchstabendauer = 0.1;
+%zum Testen:
+p.probe_buchstabendauer = 1;
 p.probe_hashtagdauer = 0.5;
-p.stim_duration     = 0.2;  
+p.stim_duration     = 2;  
 p.ITI               = .550; 
+
+
+
 % total trial duration is 500 + 100 + 1200 + 550 = 2.35 sec + jitter! [2.35-3.35 sec]
 
 % Logpath
 % p.logpath           = '/home/pc/matlab/user/maria/ERP/Logs/';
-% p.logpath = 'R:\MATLAB\BachelorRep\Logs\';
-p.logpath = pwd;
+
+%bei Romy Zuhause
+p.logpath = 'R:\MATLAB\BachelorRep\Logs\';
+
+% p.logpath = '/home/pc/matlab/user/romy/LuckyFeat/BachelorRep\Logs\'; % for room 119
+
+
+% p.logpath = pwd;
 format shortg; starttime = clock;
 p.timestamp         = [num2str(starttime(1)),'-',num2str(starttime(2)),'-',num2str(starttime(3)),'_',num2str(starttime(4)),'-',num2str(starttime(5))];
 %p.timestamp         = '';
@@ -287,7 +339,8 @@ p.target_col_label = p.stim_cols_labels{1};
 
 p.distr_col = p.stim_cols(2,:);
 p.distr_col_label = p.stim_cols_labels{2};
-p.BL_col = p.target_col;
+
+p.BL_col = p.stim_cols(3,:);
  
 
 
@@ -365,8 +418,11 @@ start_trial = p.trials_per_block*start_block-p.trials_per_block+1;
 block_nr = start_block;
 %Initialize structures for trial timing, trial responses, and blockwise behavioral analysis
 timing(1:p.trials_total)=struct('time1',0,'time2',0,'time3',0,'time4',0);
-response(1:p.trials_total)=struct('condition',nan,'hit',0,'RT',0,'error',0,'errorRT',0,'miss',0,'FA',0,'FART',0,'dFA',0,'dFART',0,'buchstaben',0); %FIX? include target true/false and distractor true/false to response struct?
-behavior(1:p.n_blocks) = struct('hitrate',0,'errorrate',0,'FArate',0,'meanRT',0);
+response(1:p.trials_total)=struct('condition',nan,'hit',0,'RT',0,'error',0,'errorRT',0,'miss',0,'FA',0,'FART',0,'dFA',0,'dFART',0,'buchstaben',0,'perm',nan,'target_pos',nan,'distr_pos',nan); %FIX? include target true/false and distractor true/false to response struct?
+behavior(1:p.n_blocks) = struct('hitrate',0,'errorrate',0,'FArate',0,'meanRT',0,'richtige',0);
+
+responsevektor(1:p.trials_total) = struct('condition',nan,'angezeigtebuchstaben',nan,'antwortbuchstaben',nan,'targetposition',nan,'distraktorposition',nan);
+
 
 for t = start_trial:p.trials_total
     if mod(t,p.trials_per_block) == 1       %show start display before first trial of the block
@@ -386,7 +442,7 @@ for t = start_trial:p.trials_total
         fprintf(['\nStart Block ' num2str(block_nr) '\n']);
         WaitSecs(0.5);
     end
-    
+     
     %define new dot color for every trial
 %     p.dot_target_col(p.target_col) = p.target_col(p.target_col) - ... %modify only the positions where there are positive RGB values
 %         p.dot_range_arr(t)*(p.target_col(p.target_col)/max(p.target_col));  %take the current luminance change out of array and multiply it with the ratio of the RGB values (to keep the color ratio of mixed colors)
@@ -403,6 +459,15 @@ for t = start_trial:p.trials_total
     [response(t), timing(t)] = ERP_present_trial(p,ps,trialstruct(t),tex);
     fprintf('.');
     
+    %Hier in den Response Vektor Speichern
+    
+    responsevektor(t).condition = response(t).condition;
+    responsevektor(t).angezeigtebuchstaben = response(t).perm;
+    responsevektor(t).antwortbuchstaben = response(t).buchstaben;
+    responsevektor(t).targetposition = response(t).target_pos;
+    responsevektor(t).distraktorposition = response(t).distr_pos;
+    
+ 
     if mod(t,p.trials_per_block) == 0   %after last trial of the block
         
 %         datapixx_trig(254);
@@ -415,24 +480,21 @@ for t = start_trial:p.trials_total
         save(sprintf('%ssub%d_all_responses_%s.mat',p.logpath,sub,p.timestamp),'response');
         save(sprintf('%ssub%d_behavior_%s.mat',p.logpath,sub,p.timestamp),'behavior');
         
+        save(sprintf('%ssub%d_responsevektor_%s.mat',p.logpath,sub,p.timestamp),'responsevektor');
+        
         %display results
         Screen('TextSize', ps.window, 20); 
         DrawFormattedText(ps.window, sprintf('Richtige Reaktionen:  %1.0f %%',behavior(block_nr).hitrate*100),'center', 600, p.fix_col);
         DrawFormattedText(ps.window, sprintf('Fehlerrate:  %1.0f %%',behavior(block_nr).errorrate*100),'center', 650, p.fix_col);
         DrawFormattedText(ps.window, sprintf('Rate Falscher Alarme:  %1.0f %%',behavior(block_nr).FArate*100),'center', 700, p.fix_col);             
-        DrawFormattedText(ps.window, sprintf('Reaktionszeit:  %1.0f ms',behavior(block_nr).meanRT*1000),'center', 750, p.fix_col);
-        
-        DrawFormattedText(ps.window, sprintf('Richtige Buchstaben:  %1.0f %%',t_behavior.richtige*100),'center', 800, p.fix_col);
+        DrawFormattedText(ps.window, sprintf('Reaktionszeit:  %1.0f ms',behavior(block_nr).meanRT*1000),'center', 750, p.fix_col);       
+        DrawFormattedText(ps.window, sprintf('Richtige Buchstaben:  %1.0f ',behavior(block_nr).richtige),'center', 800, p.fix_col);
 
         fprintf(1,'\n###\nRichtige Reaktionen:  %1.0f %%',behavior(block_nr).hitrate*100)
         fprintf(1,'\nFehlerrate:  %1.0f %%',behavior(block_nr).errorrate*100)
         fprintf(1,'\nRate Falscher Alarme:  %1.0f %%',behavior(block_nr).FArate*100)
-        fprintf(1,'\nReaktionszeit:  %1.0f ms\n###\n',behavior(block_nr).meanRT*1000)
-        
-        fprintf(1,'\nRichtige Buchstaben:  %1.0f %%\n###\n',t_behavior.richtige*100)
-        fprintf(1,'\nRichtige Targets:  %1.0f %%\n###\n',t_behavior.targetsrichtig*100)
-        fprintf(1,'\nRichtige Singletons:  %1.0f %%\n###\n',t_behavior.singletonsrichtig*100)
-        fprintf(1,'\nRichtige Filler:  %1.0f %%\n###\n',t_behavior.nonsingrichtig*100)
+        fprintf(1,'\nReaktionszeit:  %1.0f ms',behavior(block_nr).meanRT*1000)      
+        fprintf(1,'\nRichtige Buchstaben:  %1.0f \n###\n',behavior(block_nr).richtige)
         
         Screen('Flip', ps.window, 0);
         
@@ -441,6 +503,77 @@ for t = start_trial:p.trials_total
         KbWait;
     end
 end
+
+%Hier die Auswertung des Responsevektors vornehmen
+
+auswertung(1:4)=struct('condition',nan,'targetsrichtig',0,'targetsgesamt',0,'targetsprozent',nan,'distraktorenrichtig',0,'distraktorengesamt',0,'distraktorenprozent',nan,'baselinerichtig',0,'baselinegesamt',0,'baselineprozent',nan);
+auswertung(1).condition='p1a';
+auswertung(2).condition='p1b';
+auswertung(3).condition='p2a';
+auswertung(4).condition='p2b';
+
+alphabet = 'A' : 'Z';
+
+for i = 1: length(responsevektor)
+    if responsevektor(i).condition(1)=='p'
+        zeilenindex = 0; % für a-Conditions
+        startzeile = 1; %für 1-Conditions
+        if responsevektor(i).condition(3)=='b'
+            zeilenindex = 1;
+        end
+        if responsevektor(i).condition(2)=='2'
+            startzeile = 3;
+        end
+        zeile = startzeile + zeilenindex;
+        aussortieren = false;
+        if i>2
+            if responsevektor(i).condition(1) == 'p' && responsevektor(i-1).condition(1) == 'p' && responsevektor(i-2).condition(1) == 'p'
+                aussortieren = true;
+            end
+        end
+        
+        if aussortieren == false
+            respbuch = responsevektor(i).antwortbuchstaben;
+            loesperm = responsevektor(i).angezeigtebuchstaben;
+            loesbuch = '';
+            for j = 1:4
+                loesbuch(j)=alphabet(loesperm(j));
+                if j == responsevektor(i).targetposition
+                    antwort = length(intersect(loesbuch(j),respbuch));
+                    auswertung(zeile).targetsgesamt = auswertung(zeile).targetsgesamt + 1;
+                    auswertung(zeile).targetsrichtig = auswertung(zeile).targetsrichtig + antwort;
+                else
+                    if j == responsevektor(i).distraktorposition
+                        antwort = length(intersect(loesbuch(j),respbuch));
+                        auswertung(zeile).distraktorengesamt = auswertung(zeile).distraktorengesamt + 1;
+                        auswertung(zeile).distraktorenrichtig = auswertung(zeile).distraktorenrichtig + antwort;
+                    else % dann Baseline
+                        antwort = length(intersect(loesbuch(j),respbuch));
+                        auswertung(zeile).baselinegesamt = auswertung(zeile).baselinegesamt + 1;
+                        auswertung(zeile).baselinerichtig = auswertung(zeile).baselinerichtig + antwort;
+                    end
+                end
+            end
+        end    
+        
+    end
+end
+
+for i = 1:4
+    auswertung(i).targetsprozent = auswertung(i).targetsrichtig/auswertung(i).targetsgesamt;
+    auswertung(i).baselineprozent = auswertung(i).baselinerichtig/auswertung(i).baselinegesamt;
+    auswertung(i).distraktorenprozent = auswertung(i).distraktorenrichtig/auswertung(i).distraktorengesamt;
+    fprintf(1,'\nCondition:  %s\n',auswertung(i).condition)
+    fprintf(1,'Richtige Targets:  %1.0f \n',auswertung(i).targetsrichtig)
+    fprintf(1,'Richtige Targets in Prozent:  %1.0f \n',auswertung(i).targetsprozent*100)
+    fprintf(1,'Richtige Distraktoren:  %1.0f\n',auswertung(i).distraktorenrichtig)
+    fprintf(1,'Richtige Distraktoren in Prozent:  %1.0f\n',auswertung(i).distraktorenprozent*100)
+    fprintf(1,'Richtige Filler:  %1.0f\n',auswertung(i).baselinerichtig)
+    fprintf(1,'Richtige Filler in Prozent:  %1.0f\n\n',auswertung(i).baselineprozent*100)
+end
+
+save(sprintf('%ssub%d_auswertung_%s.mat',p.logpath,sub,p.timestamp),'auswertung');
+
 
 %End Experiment
 save(sprintf('%ssub%d_parameters_%s.mat',p.logpath,sub,p.timestamp),'p');

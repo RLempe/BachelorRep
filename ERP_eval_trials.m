@@ -1,6 +1,7 @@
 function [b] = ERP_eval_trials( trials, response )
 %ERP_eval_trial nansummarizes the behavior for the indicated trials
-    %"trials" is an array with trials to be analyzed
+    %"trials" is an array with trials to be analyzed 
+    
     
     allhits = nansum([response(trials).hit]);
     allmisses = nansum([response(trials).miss]);
@@ -14,21 +15,15 @@ function [b] = ERP_eval_trials( trials, response )
     %Buchstaben kalkulieren
     alphabet = 'A' : 'Z';
     gesamt = 0;
-    targets = 0;
-    targetsrichtig = 0;
-    singletons = 0;
-    singletonsrichtig = 0;
-    nonsing = 0;
-    nonsingrichtig = 0;
     
     
     
-    for i = 1:length(trials)
+    for i = trials(1):trials(length(trials))
         if response(i).condition(1) == 'p'
             aussortieren = false;
                 if i > 2 
-                aussortieren = false;
-                    if response(i).condition(1) == 'p' && response(i-1).condition(1) == 'p' && response(i-2).condition(1) == 'p'
+%                 aussortieren = false;
+                    if response(i-1).condition(1) == 'p' && response(i-2).condition(1) == 'p'
                         aussortieren = true;
                     end    
                 end
@@ -37,41 +32,14 @@ function [b] = ERP_eval_trials( trials, response )
                     loesperm = response(i).perm;
                     loesbuchst = '';        
                     for j = 1:4
-                        loesbuchst(j)=alphabet(loesperm(j));
-                        if j == response(i).target_pos 
-                            antwort = length(intersect(loesbuchst(j), respbuchst));
-                            targets = targets + 1;
-                            targetsrichtig = targetsrichtig + antwort;
-                        else
-                            if j == response(i).distr_pos
-                                antwort = length(intersect(loesbuchst(j), respbuchst));
-                                singletons = singletons + 1;
-                                singletonsrichtig = singletonsrichtig + antwort;
-                            else % dann Non-Singleton
-                                antwort = length(intersect(loesbuchst(j), respbuchst));
-                                nonsing = nonsing + 1;
-                                nonsingrichtig = nonsingrichtig + antwort;
-                            end    
-                        end 
-%                     richtige_overall = length(intersect(loesbuchst, respbuchst));
-%                     gesamt = gesamt + richtige_overall;                
+                        loesbuchst(j)=alphabet(loesperm(j));              
                     end
-                    richtige_overall = length(intersect(loesbuchst, respbuchst));
-                    gesamt = gesamt + richtige_overall;
-                end
-            
-        
-        end
-        
+                    gesamt = gesamt + length(intersect(loesbuchst, respbuchst));
+                end      
+        end     
     end
-    
-    
-    
-    b.richtige = gesamt/(length(trials)*4);
-    
-    b.targetsrichtig = targetsrichtig/targets;
-    b.singletonsrichtig = singletonsrichtig/singletons;
-    b.nonsingrichtig = nonsingrichtig/nonsing;  
+  
+    b.richtige = gesamt;  
     
 end
 
