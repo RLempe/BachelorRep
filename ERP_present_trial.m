@@ -512,7 +512,7 @@ if trialstruct.condition(1) == 's'
         if keyIsDown && ~key 
             time=secs-t.time2;
             key=find(keyCode,1);
-            lptwrite(1,key,500);
+%             lptwrite(1,key,500);
         end
         now = GetSecs();
     end
